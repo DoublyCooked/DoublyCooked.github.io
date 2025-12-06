@@ -1,0 +1,3543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doubly Cooked | Recipes by Garrett & Hunter</title>
+    <meta name="description" content="Delicious recipes from Garrett and Hunter Cook, a couple who love to cook, bake, and share their culinary adventures.">
+	
+	<!-- Standard favicons -->
+	<link rel="icon" href="public/favicon.ico">
+	<link rel="icon" type="image/png" sizes="32x32" href="public/favicon-32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="public/favicon-16.png">
+	<link rel="icon" type="image/svg+xml" href="public/favicon.svg">
+
+	<!-- iOS -->
+	<link rel="apple-touch-icon" href="public/apple-touch-icon.png">
+
+	<!-- PWA manifest -->
+	<link rel="manifest" href="public/site.webmanifest">
+
+	<!-- Optional theme color -->
+	<meta name="theme-color" content="#fdf6e3">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore-compat.js"></script>
+    
+    <!-- Google reCAPTCHA -->
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    
+    <!-- Google AdSense - Replace with your AdSense code -->
+    <!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script> -->
+    
+    <style>
+        :root {
+            --burnt-orange: #BF5A36;
+            --blood-orange: #C94C2C;
+            --terracotta: #D97652;
+            --warm-cream: #FDF6E3;
+            --soft-cream: #FAF3E8;
+            --warm-white: #FFFEF9;
+            --warm-brown: #5C4033;
+            --soft-brown: #8B7355;
+            --warm-gray: #6B6358;
+            --light-warm-gray: #A89F94;
+            --border-warm: #E8DFD3;
+            --shadow-warm: rgba(92, 64, 51, 0.08);
+            --font-display: 'Fraunces', Georgia, serif;
+            --font-body: 'Source Sans 3', -apple-system, BlinkMacSystemFont, sans-serif;
+            --space-xs: 0.25rem;
+            --space-sm: 0.5rem;
+            --space-md: 1rem;
+            --space-lg: 1.5rem;
+            --space-xl: 2rem;
+            --space-2xl: 3rem;
+            --space-3xl: 4rem;
+            --radius-sm: 4px;
+            --radius-md: 8px;
+            --radius-lg: 16px;
+            --radius-xl: 24px;
+            --container-max: 1200px;
+            --container-narrow: 800px;
+        }
+        
+        /* Dark mode - warm, cozy palette */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --burnt-orange: #E07850;
+                --blood-orange: #D96544;
+                --terracotta: #E8956E;
+                --warm-cream: #2A2420;
+                --soft-cream: #352E28;
+                --warm-white: #3D342D;
+                --warm-brown: #F5EDE4;
+                --soft-brown: #C4B8A8;
+                --warm-gray: #B8ADA0;
+                --light-warm-gray: #8A7F72;
+                --border-warm: #4A413A;
+                --shadow-warm: rgba(0, 0, 0, 0.25);
+            }
+            
+            /* Ensure text readability */
+            body {
+                color: var(--warm-brown);
+            }
+            
+            /* Recipe cards */
+            .recipe-card {
+                background: var(--warm-white);
+            }
+            
+            /* Headers and floating elements */
+            .header {
+                background: var(--soft-cream);
+                border-bottom-color: var(--border-warm);
+            }
+            
+            .floating-nav .nav-link,
+            .floating-nav .social-link {
+                background: var(--soft-cream);
+            }
+            
+            .mobile-header {
+                background: var(--soft-cream);
+                border-bottom-color: var(--border-warm);
+            }
+            
+            .mobile-menu {
+                background: var(--warm-cream);
+            }
+            
+            .floating-hamburger {
+                color: var(--warm-brown);
+            }
+            
+            /* Search box */
+            .search-box {
+                background: var(--warm-white);
+                border-color: var(--border-warm);
+            }
+            
+            .search-input {
+                color: var(--warm-brown);
+            }
+            
+            .search-input::placeholder {
+                color: var(--light-warm-gray);
+            }
+            
+            /* Hero section */
+            .hero {
+                background: linear-gradient(135deg, var(--warm-cream) 0%, var(--soft-cream) 100%);
+            }
+            
+            /* Ingredients card and other cards */
+            .ingredients-card,
+            .review-card,
+            .contact-card {
+                background: var(--warm-white);
+            }
+            
+            /* Form inputs */
+            .review-form input,
+            .review-form textarea {
+                background: var(--soft-cream);
+                border-color: var(--border-warm);
+                color: var(--warm-brown);
+            }
+            
+            /* Ad container */
+            .ad-container {
+                background: var(--soft-cream);
+                border-color: var(--border-warm);
+            }
+            
+            /* About page */
+            .about-image-frame {
+                background: var(--soft-cream);
+            }
+            
+            .about-fact {
+                background: var(--warm-white);
+            }
+            
+            /* Back button */
+            .back-btn {
+                background: var(--soft-cream);
+                color: var(--warm-brown);
+            }
+            
+            /* Toast */
+            .toast {
+                background: var(--soft-cream);
+                color: var(--warm-brown);
+            }
+            
+            /* No results */
+            .no-results {
+                color: var(--soft-brown);
+            }
+            
+            /* Contact page */
+            .contact-email {
+                background: var(--soft-cream);
+            }
+            
+            .contact-social-btn {
+                background: var(--warm-white);
+            }
+            
+            /* Browse page */
+            .browse-filters {
+                background: var(--soft-cream);
+            }
+            
+            .filter-search {
+                background: var(--warm-white);
+                border-color: var(--border-warm);
+                color: var(--warm-brown);
+            }
+            
+            .browse-sort {
+                background: var(--warm-white);
+                border-color: var(--border-warm);
+                color: var(--warm-brown);
+            }
+            
+            .sort-order-btn {
+                background: var(--warm-white);
+                border-color: var(--border-warm);
+            }
+            
+            .clear-filters-btn {
+                border-color: var(--border-warm);
+                color: var(--soft-brown);
+            }
+            
+            .load-more-reviews-btn {
+                background: var(--soft-cream);
+                border-color: var(--border-warm);
+            }
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        
+        img {
+            border: none;
+            outline: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        body {
+            font-family: var(--font-body);
+            background-color: var(--warm-cream);
+            color: var(--warm-brown);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: var(--container-max);
+            margin: 0 auto;
+            padding: 0 var(--space-lg);
+        }
+        
+        h1, h2, h3, h4 {
+            font-family: var(--font-display);
+            font-weight: 500;
+            line-height: 1.2;
+        }
+        
+        h1 { font-size: clamp(2rem, 5vw, 3rem); }
+        h2 { font-size: clamp(1.5rem, 3vw, 2.25rem); }
+        h3 { font-size: clamp(1.25rem, 2.5vw, 1.5rem); }
+        
+        a {
+            color: var(--burnt-orange);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+        
+        a:hover { color: var(--blood-orange); }
+        
+        /* Header - slides down on scroll (desktop only) */
+        .header {
+            background: var(--warm-white);
+            border-bottom: 1px solid var(--border-warm);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            transform: translateY(-100%);
+            transition: transform 0.3s ease, background 0.3s ease;
+        }
+        
+        .header.visible {
+            transform: translateY(0);
+        }
+        
+        /* Floating nav buttons - visible at top on desktop only */
+        .floating-nav {
+            position: fixed;
+            top: var(--space-md);
+            right: var(--space-lg);
+            z-index: 101;
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            transition: opacity 0.3s ease;
+        }
+        
+        .floating-nav .nav-link {
+            background: var(--warm-white);
+            box-shadow: 0 2px 12px var(--shadow-warm);
+            border-radius: var(--radius-md);
+            padding: var(--space-sm) var(--space-md);
+            font-weight: 500;
+            color: var(--warm-brown);
+            transition: all 0.2s ease;
+        }
+        
+        .floating-nav .nav-link:hover {
+            background: var(--burnt-orange);
+            color: white;
+        }
+        
+        .floating-nav .social-links {
+            display: flex;
+            gap: var(--space-xs);
+        }
+        
+        .floating-nav .social-link {
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: var(--warm-white);
+            box-shadow: 0 2px 12px var(--shadow-warm);
+            color: var(--warm-brown);
+            transition: all 0.2s ease;
+        }
+        
+        .floating-nav .social-link:hover {
+            background: var(--burnt-orange);
+            color: white;
+        }
+        
+        .floating-nav .social-link svg { width: 18px; height: 18px; }
+        
+        /* Hide floating nav when header is visible (desktop) */
+        .floating-nav.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        /* Mobile header - always visible with hamburger */
+        .mobile-header {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 102;
+            background: var(--warm-white);
+            border-bottom: 1px solid var(--border-warm);
+            padding: var(--space-md) var(--space-md);
+        }
+        
+        /* Hide mobile elements on desktop by default */
+        .floating-hamburger.hidden,
+        .mobile-header:not(.visible) {
+            transform: translateY(-100%);
+        }
+        
+        .mobile-header-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .mobile-header .logo {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            text-decoration: none;
+        }
+        
+        .mobile-header .logo-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            object-fit: cover;
+            background: var(--burnt-orange);
+            padding: 1px;
+            opacity: 0.98;
+        }
+        
+        .mobile-header .logo-text {
+            font-family: var(--font-display);
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--burnt-orange);
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            padding: var(--space-sm);
+            cursor: pointer;
+            color: var(--warm-brown);
+        }
+        
+        .mobile-menu-btn svg { width: 24px; height: 24px; }
+        
+        /* Show mobile-menu-btn inside mobile header */
+        .mobile-header .mobile-menu-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* Floating hamburger button (mobile only, always visible at top of page) */
+        .floating-hamburger {
+            display: none;
+            position: fixed;
+            top: var(--space-md);
+            right: var(--space-md);
+            z-index: 103;
+            background: transparent;
+            border: none;
+            width: 44px;
+            height: 44px;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: var(--warm-brown);
+            transition: all 0.2s ease;
+            /* Subtle text shadow for visibility against light backgrounds */
+            filter: drop-shadow(0 1px 2px rgba(0,0,0,0.1));
+        }
+        
+        .floating-hamburger:hover {
+            color: var(--burnt-orange);
+        }
+        
+        .floating-hamburger svg { width: 28px; height: 28px; }
+        
+        /* Hide floating hamburger when mobile header is visible */
+        .floating-hamburger.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        /* Mobile menu dropdown */
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--warm-white);
+            z-index: 102;
+            padding: var(--space-xl) var(--space-lg) var(--space-lg);
+            overflow-y: auto;
+        }
+        
+        .mobile-menu.open {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .mobile-menu-close {
+            position: absolute;
+            top: var(--space-md);
+            right: var(--space-md);
+            background: none;
+            border: none;
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: var(--warm-brown);
+            border-radius: 50%;
+            transition: all 0.2s ease;
+        }
+        
+        .mobile-menu-close:hover {
+            background: var(--soft-cream);
+        }
+        
+        .mobile-menu-close svg { width: 24px; height: 24px; }
+        
+        .mobile-menu-brand {
+            text-align: center;
+            padding: var(--space-lg) 0 var(--space-xl);
+            border-bottom: 1px solid var(--border-warm);
+            margin-bottom: var(--space-lg);
+        }
+        
+        .mobile-menu-logo {
+            width: 100px;
+            height: 100px;
+            margin-bottom: var(--space-sm);
+            border-radius: 50%;
+            object-fit: cover;
+            background: var(--burnt-orange);
+            padding: 1px;
+            opacity: 0.98;
+        }
+        
+        .mobile-menu-title {
+            display: block;
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--burnt-orange);
+            margin-bottom: var(--space-xs);
+        }
+        
+        .mobile-menu-tagline {
+            display: block;
+            font-family: var(--font-display);
+            font-size: 0.9rem;
+            font-style: italic;
+            color: var(--soft-brown);
+        }
+        
+        .mobile-menu-nav {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-xs);
+        }
+        
+        .mobile-menu-nav a {
+            display: block;
+            padding: var(--space-md) var(--space-lg);
+            color: var(--warm-brown);
+            font-weight: 500;
+            font-size: 1.25rem;
+            border-radius: var(--radius-md);
+            transition: all 0.2s ease;
+        }
+        
+        .mobile-menu-nav a:hover {
+            background: var(--soft-cream);
+            color: var(--burnt-orange);
+        }
+        
+        .mobile-menu-footer {
+            margin-top: auto;
+            padding-top: var(--space-lg);
+            border-top: 1px solid var(--border-warm);
+            text-align: center;
+        }
+        
+        .mobile-menu-footer .social-links {
+            display: flex;
+            justify-content: center;
+            gap: var(--space-md);
+            margin-bottom: var(--space-md);
+        }
+        
+        .mobile-menu-footer .social-link {
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: var(--soft-cream);
+            color: var(--warm-brown);
+            transition: all 0.2s ease;
+        }
+        
+        .mobile-menu-footer .social-link:hover {
+            background: var(--burnt-orange);
+            color: white;
+        }
+        
+        .mobile-menu-footer .social-link svg {
+            width: 20px;
+            height: 20px;
+        }
+        
+        .mobile-menu-credit {
+            font-size: 0.875rem;
+            color: var(--soft-brown);
+            margin: 0;
+        }
+        
+        .header-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: var(--space-md) var(--space-lg);
+            padding-top: var(--space-lg);
+            padding-bottom: var(--space-lg);
+            gap: var(--space-lg);
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            text-decoration: none;
+            color: var(--warm-brown);
+        }
+        
+        .logo-icon { 
+            width: 54px; 
+            height: 54px; 
+            border-radius: 50%;
+            object-fit: cover;
+            background: var(--burnt-orange);
+            padding: 1px;
+            opacity: 0.98;
+        }
+        
+        .logo-text {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--burnt-orange);
+        }
+        
+        .nav {
+            display: flex;
+            align-items: center;
+            gap: var(--space-lg);
+        }
+        
+        .nav-link {
+            font-weight: 500;
+            color: var(--warm-brown);
+            padding: var(--space-sm) var(--space-md);
+            border-radius: var(--radius-md);
+            transition: all 0.2s ease;
+        }
+        
+        .nav-link:hover {
+            background: var(--soft-cream);
+            color: var(--burnt-orange);
+        }
+        
+        .nav-link.mobile-only {
+            display: none;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: var(--space-sm);
+        }
+        
+        .social-link {
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: var(--soft-cream);
+            color: var(--warm-brown);
+            transition: all 0.2s ease;
+        }
+        
+        .social-link:hover {
+            background: var(--burnt-orange);
+            color: white;
+        }
+        
+        .social-link svg { width: 18px; height: 18px; }
+        
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            padding: var(--space-sm);
+            cursor: pointer;
+            color: var(--warm-brown);
+        }
+        
+        .mobile-menu-btn svg { width: 24px; height: 24px; }
+        
+        /* Hero */
+        .hero {
+            background: linear-gradient(135deg, var(--warm-white) 0%, var(--soft-cream) 100%);
+            padding: var(--space-2xl) 0 var(--space-3xl);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 30% 70%, rgba(191, 90, 54, 0.05) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 30%, rgba(201, 76, 44, 0.05) 0%, transparent 50%);
+            animation: float 20s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            50% { transform: translate(2%, 2%) rotate(2deg); }
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .hero-brand {
+            margin-bottom: var(--space-md);
+        }
+        
+        .hero-logo {
+            width: clamp(100px, 15vw, 140px);
+            height: clamp(100px, 15vw, 140px);
+            margin: 0 auto var(--space-md);
+            animation: gentle-bounce 3s ease-in-out infinite;
+            border-radius: 50%;
+            overflow: hidden;
+            background: var(--burnt-orange);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 20px var(--shadow-warm);
+        }
+        
+        .hero-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.98;
+        }
+        
+        @keyframes gentle-bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+        
+        .hero-title {
+            font-family: var(--font-display);
+            font-size: clamp(2.5rem, 7vw, 4rem);
+            font-weight: 600;
+            color: var(--burnt-orange);
+            line-height: 1;
+            margin-bottom: var(--space-xs);
+            letter-spacing: -0.02em;
+        }
+        
+        .hero-title .accent {
+            display: block;
+            font-style: italic;
+            font-weight: 400;
+        }
+        
+        .hero-tagline {
+            font-family: var(--font-display);
+            font-size: 1rem;
+            font-weight: 400;
+            font-style: italic;
+            color: var(--soft-brown);
+            margin-bottom: var(--space-sm);
+            letter-spacing: 0.02em;
+        }
+        
+        .hero-divider {
+            width: 50px;
+            height: 2px;
+            background: linear-gradient(90deg, var(--burnt-orange), var(--terracotta));
+            margin: 0 auto var(--space-md);
+            border-radius: 2px;
+        }
+        
+        .hero-subtitle {
+            font-size: 1rem;
+            color: var(--warm-gray);
+            margin-bottom: var(--space-lg);
+            max-width: 450px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
+        }
+        
+        /* Search */
+        .search-container { max-width: 550px; margin: 0 auto; }
+        
+        .search-box {
+            display: flex;
+            align-items: center;
+            background: var(--warm-white);
+            border: 1px solid var(--border-warm);
+            border-radius: 100px;
+            overflow: hidden;
+            box-shadow: 0 2px 12px var(--shadow-warm), 0 0 0 0 rgba(191, 90, 54, 0);
+            transition: all 0.3s ease;
+            padding: var(--space-xs);
+        }
+        
+        .search-box:focus-within {
+            border-color: var(--burnt-orange);
+            box-shadow: 0 4px 20px var(--shadow-warm), 0 0 0 3px rgba(191, 90, 54, 0.1);
+        }
+        
+        .search-input {
+            flex: 1;
+            padding: var(--space-sm) var(--space-md);
+            border: none;
+            font-size: 1rem;
+            font-family: var(--font-body);
+            background: transparent;
+            color: var(--warm-brown);
+            min-width: 0;
+        }
+        
+        .search-input::placeholder { color: var(--light-warm-gray); }
+        .search-input:focus { outline: none; }
+        
+        .search-btn {
+            padding: var(--space-sm) var(--space-lg);
+            background: var(--burnt-orange);
+            border: none;
+            color: white;
+            font-family: var(--font-body);
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-xs);
+            border-radius: 100px;
+            white-space: nowrap;
+        }
+        
+        .search-btn:hover { 
+            background: var(--blood-orange); 
+            transform: scale(1.02);
+        }
+        
+        .search-btn svg { 
+            width: 18px; 
+            height: 18px;
+            flex-shrink: 0;
+        }
+        
+        /* Sections */
+        .section { padding: var(--space-3xl) 0; }
+        
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: var(--space-xl);
+            flex-wrap: wrap;
+            gap: var(--space-md);
+        }
+        
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+        }
+        
+        .section-title::before {
+            content: '';
+            width: 4px;
+            height: 1.5em;
+            background: var(--burnt-orange);
+            border-radius: 2px;
+        }
+        
+        /* Recipe Grid */
+        .recipe-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: var(--space-xl);
+        }
+        
+        .recipe-card {
+            background: var(--warm-white);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: 0 2px 12px var(--shadow-warm);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+        
+        .recipe-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 30px rgba(92, 64, 51, 0.12);
+        }
+        
+        .recipe-card-image {
+            aspect-ratio: 4/3;
+            overflow: hidden;
+            position: relative;
+            background: var(--soft-cream);
+        }
+        
+        .recipe-card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+            display: block;
+            border: none;
+            outline: none;
+        }
+        
+        .recipe-card:hover .recipe-card-image img { transform: scale(1.05); }
+        
+        .recipe-card-badge {
+            position: absolute;
+            top: var(--space-md);
+            left: var(--space-md);
+            background: var(--burnt-orange);
+            color: white;
+            padding: var(--space-xs) var(--space-sm);
+            border-radius: var(--radius-sm);
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .recipe-card-badge-new {
+            background: #2E7D32;
+        }
+        
+        .recipe-card-content { padding: var(--space-lg); }
+        
+        .recipe-card-rating {
+            display: flex;
+            align-items: center;
+            gap: var(--space-xs);
+            margin-bottom: var(--space-sm);
+            color: var(--terracotta);
+            font-size: 0.875rem;
+        }
+        
+        .recipe-card-rating svg {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
+        }
+        
+        .recipe-card-rating svg.star-full {
+            color: var(--terracotta);
+        }
+        
+        .recipe-card-rating svg.star-partial {
+            color: var(--terracotta);
+        }
+        
+        .recipe-card-rating svg.star-empty {
+            color: var(--border-warm);
+        }
+        
+        .recipe-card h3 { margin-bottom: var(--space-sm); color: var(--warm-brown); }
+        
+        .recipe-card-meta {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+            color: var(--soft-brown);
+            font-size: 0.875rem;
+        }
+        
+        .recipe-card-meta span {
+            display: flex;
+            align-items: center;
+            gap: var(--space-xs);
+        }
+        
+        .recipe-card-meta svg { width: 14px; height: 14px; }
+        
+        /* Ad Container */
+        .ad-container {
+            background: var(--soft-cream);
+            border: 1px dashed var(--border-warm);
+            border-radius: var(--radius-lg);
+            padding: var(--space-xl);
+            text-align: center;
+            margin: var(--space-xl) 0;
+            min-height: 150px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .ad-placeholder {
+            color: var(--light-warm-gray);
+            font-size: 0.875rem;
+        }
+        
+        /* Browse All Link */
+        .browse-all-link {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-xs);
+            margin-top: var(--space-md);
+            color: var(--burnt-orange);
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+        
+        .browse-all-link:hover {
+            gap: var(--space-sm);
+            color: var(--blood-orange);
+        }
+        
+        .browse-all-link svg {
+            width: 18px;
+            height: 18px;
+            transition: transform 0.2s ease;
+        }
+        
+        .browse-all-link:hover svg {
+            transform: translateX(3px);
+        }
+        
+        /* Browse Page */
+        .browse-page {
+            padding: var(--space-2xl) 0;
+            padding-top: 100px;
+            display: none;
+        }
+        
+        .browse-page.active { display: block; }
+        
+        .browse-header {
+            text-align: center;
+            margin-bottom: var(--space-2xl);
+        }
+        
+        .browse-header h1 {
+            color: var(--burnt-orange);
+            margin-bottom: var(--space-sm);
+        }
+        
+        .browse-header p {
+            color: var(--soft-brown);
+        }
+        
+        .browse-layout {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: var(--space-2xl);
+        }
+        
+        .browse-filters {
+            background: var(--soft-cream);
+            border-radius: var(--radius-lg);
+            padding: var(--space-lg);
+            height: fit-content;
+            position: sticky;
+            top: 100px;
+        }
+        
+        .filter-section {
+            margin-bottom: var(--space-lg);
+            padding-bottom: var(--space-lg);
+            border-bottom: 1px solid var(--border-warm);
+        }
+        
+        .filter-section:last-of-type {
+            border-bottom: none;
+            margin-bottom: var(--space-md);
+        }
+        
+        .filter-section h3 {
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--warm-brown);
+            margin-bottom: var(--space-md);
+        }
+        
+        .filter-search {
+            width: 100%;
+            padding: var(--space-sm) var(--space-md);
+            border: 1px solid var(--border-warm);
+            border-radius: var(--radius-md);
+            font-family: var(--font-body);
+            font-size: 0.9rem;
+            background: var(--warm-white);
+        }
+        
+        .filter-search:focus {
+            outline: none;
+            border-color: var(--burnt-orange);
+        }
+        
+        .filter-options {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-sm);
+        }
+        
+        .filter-checkbox {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            cursor: pointer;
+            font-size: 0.9rem;
+            color: var(--warm-gray);
+        }
+        
+        .filter-checkbox input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--burnt-orange);
+            cursor: pointer;
+        }
+        
+        .filter-checkbox:hover {
+            color: var(--warm-brown);
+        }
+        
+        .clear-filters-btn {
+            width: 100%;
+            padding: var(--space-sm) var(--space-md);
+            background: transparent;
+            border: 1px solid var(--border-warm);
+            border-radius: var(--radius-md);
+            color: var(--soft-brown);
+            font-family: var(--font-body);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .clear-filters-btn:hover {
+            background: var(--burnt-orange);
+            border-color: var(--burnt-orange);
+            color: white;
+        }
+        
+        .browse-results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-lg);
+        }
+        
+        .browse-results-count {
+            color: var(--soft-brown);
+        }
+        
+        .browse-sort-controls {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+        }
+        
+        .browse-sort {
+            padding: var(--space-sm) var(--space-md);
+            border: 1px solid var(--border-warm);
+            border-radius: var(--radius-md);
+            background: var(--warm-white);
+            font-family: var(--font-body);
+            color: var(--warm-brown);
+            cursor: pointer;
+        }
+        
+        .browse-sort:focus {
+            outline: none;
+            border-color: var(--burnt-orange);
+        }
+        
+        .sort-order-btn {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--warm-white);
+            border: 1px solid var(--border-warm);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            color: var(--warm-brown);
+            transition: all 0.2s ease;
+        }
+        
+        .sort-order-btn:hover {
+            background: var(--soft-cream);
+            border-color: var(--burnt-orange);
+        }
+        
+        .sort-order-btn svg {
+            width: 20px;
+            height: 20px;
+            transition: transform 0.2s ease;
+        }
+        
+        .sort-order-btn.ascending svg {
+            transform: rotate(180deg);
+        }
+        
+        /* Search Results */
+        .search-results {
+            padding: var(--space-2xl) 0;
+            padding-top: 80px;
+            display: none;
+        }
+        
+        .search-results.active { display: block; }
+        .search-results-header { margin-bottom: var(--space-xl); }
+        .search-results-count { color: var(--soft-brown); margin-top: var(--space-sm); }
+        
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-sm);
+            padding: var(--space-sm) var(--space-md);
+            background: var(--soft-cream);
+            border: none;
+            border-radius: var(--radius-md);
+            color: var(--warm-brown);
+            font-family: var(--font-body);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-bottom: var(--space-lg);
+        }
+        
+        .back-btn:hover { background: var(--burnt-orange); color: white; }
+        .back-btn svg { width: 16px; height: 16px; }
+        
+        /* Recipe Page */
+        .recipe-page {
+            display: none;
+            padding: var(--space-2xl) 0;
+            padding-top: 80px;
+        }
+        
+        .recipe-page.active { display: block; }
+        
+        .recipe-hero {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-2xl);
+            margin-bottom: var(--space-2xl);
+        }
+        
+        .recipe-hero-image {
+            aspect-ratio: 4/3;
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: 0 8px 40px var(--shadow-warm);
+            background: var(--soft-cream);
+        }
+        
+        .recipe-hero-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            border: none;
+            outline: none;
+        }
+        
+        .recipe-hero-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .recipe-hero-content h1 { margin-bottom: var(--space-xs); }
+        
+        .recipe-author {
+            font-size: 1rem;
+            color: var(--soft-brown);
+            margin-bottom: var(--space-md);
+            font-style: italic;
+        }
+        
+        .recipe-rating-large {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            margin-bottom: var(--space-lg);
+            color: var(--terracotta);
+        }
+        
+        .recipe-rating-large .stars { display: flex; gap: 2px; }
+        .recipe-rating-large svg { width: 24px; height: 24px; fill: currentColor; }
+        .recipe-rating-large .rating-text { font-size: 1.125rem; font-weight: 500; }
+        .recipe-rating-large .review-count { color: var(--soft-brown); font-size: 0.875rem; }
+        
+        .recipe-meta-detailed {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--space-lg);
+            margin-bottom: var(--space-lg);
+            padding: var(--space-lg);
+            background: var(--soft-cream);
+            border-radius: var(--radius-md);
+        }
+        
+        .recipe-meta-item { display: flex; flex-direction: column; gap: var(--space-xs); }
+        
+        .recipe-meta-item .label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--soft-brown);
+        }
+        
+        .recipe-meta-item .value { font-weight: 500; color: var(--warm-brown); }
+        .recipe-description { color: var(--warm-gray); line-height: 1.8; }
+        
+        /* Recipe Content */
+        .recipe-content {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: var(--space-2xl);
+        }
+        
+        .recipe-sidebar {
+            position: sticky;
+            top: calc(80px + var(--space-lg));
+            align-self: start;
+        }
+        
+        .ingredients-card {
+            background: var(--warm-white);
+            border-radius: var(--radius-lg);
+            padding: var(--space-xl);
+            box-shadow: 0 2px 12px var(--shadow-warm);
+        }
+        
+        .ingredients-card h2 {
+            margin-bottom: var(--space-lg);
+            padding-bottom: var(--space-md);
+            border-bottom: 2px solid var(--burnt-orange);
+        }
+        
+        .ingredient-list { list-style: none; }
+        
+        .ingredient-item {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--space-sm);
+            padding: var(--space-sm) 0;
+            border-bottom: 1px solid var(--border-warm);
+            cursor: pointer;
+        }
+        
+        .ingredient-item:last-child { border-bottom: none; }
+        
+        .ingredient-checkbox {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--burnt-orange);
+            border-radius: var(--radius-sm);
+            flex-shrink: 0;
+            margin-top: 2px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+        
+        .ingredient-checkbox.checked { background: var(--burnt-orange); }
+        .ingredient-checkbox svg { width: 12px; height: 12px; color: white; opacity: 0; }
+        .ingredient-checkbox.checked svg { opacity: 1; }
+        
+        .ingredient-item.checked .ingredient-text {
+            text-decoration: line-through;
+            color: var(--light-warm-gray);
+        }
+        
+        .directions-section {
+            background: var(--warm-white);
+            border-radius: var(--radius-lg);
+            padding: var(--space-xl);
+            box-shadow: 0 2px 12px var(--shadow-warm);
+        }
+        
+        .directions-section h2 { margin-bottom: var(--space-xl); }
+        
+        .direction-step {
+            display: flex;
+            gap: var(--space-lg);
+            margin-bottom: var(--space-xl);
+        }
+        
+        .direction-step:last-child { margin-bottom: 0; }
+        
+        .step-number {
+            width: 40px;
+            height: 40px;
+            background: var(--burnt-orange);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-display);
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+        
+        .step-content { flex: 1; padding-top: var(--space-sm); }
+        .step-content p { line-height: 1.8; color: var(--warm-gray); }
+        
+        /* Reviews */
+        .reviews-section {
+            margin-top: var(--space-2xl);
+            padding-top: var(--space-2xl);
+            border-top: 1px solid var(--border-warm);
+        }
+        
+        .reviews-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: var(--space-xl);
+            flex-wrap: wrap;
+            gap: var(--space-md);
+        }
+        
+        .review-form {
+            background: var(--warm-white);
+            border-radius: var(--radius-lg);
+            padding: var(--space-xl);
+            margin-bottom: var(--space-xl);
+            box-shadow: 0 2px 12px var(--shadow-warm);
+        }
+        
+        .review-form h3 { margin-bottom: var(--space-lg); }
+        .form-group { margin-bottom: var(--space-lg); }
+        .form-group label { display: block; margin-bottom: var(--space-sm); font-weight: 500; }
+        
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: var(--space-md);
+            border: 2px solid var(--border-warm);
+            border-radius: var(--radius-md);
+            font-family: var(--font-body);
+            font-size: 1rem;
+            transition: border-color 0.2s ease;
+        }
+        
+        .form-group input:focus,
+        .form-group textarea:focus { outline: none; border-color: var(--burnt-orange); }
+        .form-group textarea { min-height: 120px; resize: vertical; }
+        
+        .star-rating-input { display: flex; gap: var(--space-xs); }
+        
+        .star-rating-input button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            color: var(--border-warm);
+            transition: color 0.2s ease;
+        }
+        
+        .star-rating-input button svg { width: 32px; height: 32px; fill: currentColor; }
+        .star-rating-input button.active,
+        .star-rating-input button.hover { color: var(--terracotta); }
+        
+        .submit-btn {
+            background: var(--burnt-orange);
+            color: white;
+            border: none;
+            padding: var(--space-md) var(--space-xl);
+            border-radius: var(--radius-md);
+            font-family: var(--font-body);
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+        
+        .submit-btn:hover { background: var(--blood-orange); }
+        .submit-btn:disabled { background: var(--light-warm-gray); cursor: not-allowed; }
+        
+        .reviews-list { display: flex; flex-direction: column; gap: var(--space-lg); }
+        
+        .review-card {
+            background: var(--warm-white);
+            border-radius: var(--radius-lg);
+            padding: var(--space-xl);
+            box-shadow: 0 2px 12px var(--shadow-warm);
+        }
+        
+        .review-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: var(--space-md);
+        }
+        
+        .reviewer-info { display: flex; align-items: center; gap: var(--space-md); }
+        
+        .reviewer-avatar {
+            width: 48px;
+            height: 48px;
+            background: var(--soft-cream);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: var(--burnt-orange);
+        }
+        
+        .reviewer-name { font-weight: 500; }
+        .review-date { color: var(--light-warm-gray); font-size: 0.875rem; }
+        .review-stars { display: flex; gap: 2px; color: var(--terracotta); }
+        .review-stars svg { width: 16px; height: 16px; fill: currentColor; }
+        .review-text { color: var(--warm-gray); line-height: 1.7; }
+        
+        .load-more-reviews-btn {
+            width: 100%;
+            padding: var(--space-md) var(--space-xl);
+            background: var(--soft-cream);
+            border: 1px solid var(--border-warm);
+            border-radius: var(--radius-md);
+            color: var(--warm-brown);
+            font-family: var(--font-body);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .load-more-reviews-btn:hover {
+            background: var(--burnt-orange);
+            border-color: var(--burnt-orange);
+            color: white;
+        }
+        
+        /* About Page */
+        .about-page { display: none; padding: var(--space-3xl) 0; }
+        .about-page.active { display: block; }
+        .about-hero { text-align: center; margin-bottom: var(--space-3xl); }
+        .about-hero h1 { margin-bottom: var(--space-lg); }
+        
+        .about-hero p {
+            font-size: 1.25rem;
+            color: var(--soft-brown);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-3xl);
+            align-items: center;
+        }
+        
+        .about-image {
+            aspect-ratio: 1;
+            border-radius: var(--radius-xl);
+            overflow: hidden;
+            box-shadow: 0 8px 40px var(--shadow-warm);
+        }
+        
+        .about-image img { width: 100%; height: 100%; object-fit: cover; }
+        .about-text { padding: var(--space-xl); }
+        .about-text p { margin-bottom: var(--space-lg); line-height: 1.8; color: var(--warm-gray); }
+        
+        .about-text p:first-child::first-letter {
+            font-family: var(--font-display);
+            font-size: 3.5rem;
+            float: left;
+            line-height: 1;
+            margin-right: var(--space-sm);
+            color: var(--burnt-orange);
+        }
+        
+        .about-facts {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--space-lg);
+            margin-top: var(--space-2xl);
+            padding-top: var(--space-xl);
+            border-top: 1px solid var(--border-warm);
+        }
+        
+        .about-fact { text-align: center; }
+        
+        .about-fact-icon {
+            width: 48px;
+            height: 48px;
+            margin: 0 auto var(--space-sm);
+            color: var(--burnt-orange);
+        }
+        
+        .about-fact-icon svg { width: 100%; height: 100%; }
+        .about-fact h4 { font-size: 1rem; margin-bottom: var(--space-xs); }
+        .about-fact p { font-size: 0.875rem; color: var(--soft-brown); margin: 0; }
+        
+        /* Contact Page */
+        .contact-page { 
+            display: none; 
+            padding: var(--space-3xl) 0; 
+        }
+        
+        .contact-page.active { display: block; }
+        
+        .contact-hero { 
+            text-align: center; 
+            margin-bottom: var(--space-3xl); 
+        }
+        
+        .contact-hero h1 { margin-bottom: var(--space-lg); }
+        
+        .contact-hero p {
+            font-size: 1.25rem;
+            color: var(--soft-brown);
+        }
+        
+        .contact-content {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .contact-card {
+            background: var(--warm-white);
+            border-radius: var(--radius-lg);
+            padding: var(--space-2xl);
+            text-align: center;
+            box-shadow: 0 4px 20px var(--shadow-warm);
+            margin-bottom: var(--space-2xl);
+        }
+        
+        .contact-icon {
+            width: 64px;
+            height: 64px;
+            margin: 0 auto var(--space-lg);
+            color: var(--burnt-orange);
+        }
+        
+        .contact-icon svg {
+            width: 100%;
+            height: 100%;
+        }
+        
+        .contact-card h3 {
+            margin-bottom: var(--space-md);
+        }
+        
+        .contact-card p {
+            color: var(--warm-gray);
+            margin-bottom: var(--space-lg);
+            line-height: 1.7;
+        }
+        
+        .contact-email {
+            display: inline-block;
+            font-size: 1.25rem;
+            font-weight: 500;
+            color: var(--burnt-orange);
+            padding: var(--space-md) var(--space-xl);
+            background: var(--soft-cream);
+            border-radius: var(--radius-md);
+            transition: all 0.2s ease;
+        }
+        
+        .contact-email:hover {
+            background: var(--burnt-orange);
+            color: white;
+        }
+        
+        .contact-social-section {
+            text-align: center;
+        }
+        
+        .contact-social-section h3 {
+            color: var(--soft-brown);
+            font-size: 1rem;
+            margin-bottom: var(--space-lg);
+        }
+        
+        .contact-social-links {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: var(--space-md);
+        }
+        
+        .contact-social-btn {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            padding: var(--space-sm) var(--space-lg);
+            background: var(--warm-white);
+            border-radius: var(--radius-md);
+            color: var(--warm-brown);
+            font-weight: 500;
+            box-shadow: 0 2px 8px var(--shadow-warm);
+            transition: all 0.2s ease;
+        }
+        
+        .contact-social-btn:hover {
+            background: var(--burnt-orange);
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        .contact-social-btn svg {
+            width: 20px;
+            height: 20px;
+        }
+        
+        /* Footer */
+        .footer {
+            background: var(--warm-brown);
+            color: var(--warm-cream);
+            padding: var(--space-3xl) 0 var(--space-xl);
+            margin-top: var(--space-3xl);
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: var(--space-2xl);
+            margin-bottom: var(--space-2xl);
+        }
+        
+        .footer-brand .logo-text {
+            color: var(--warm-cream);
+            margin-bottom: var(--space-md);
+            display: block;
+        }
+        
+        .footer-brand p { color: rgba(253, 246, 227, 0.7); max-width: 300px; }
+        .footer-links h4 { color: var(--warm-cream); margin-bottom: var(--space-lg); }
+        .footer-links ul { list-style: none; }
+        .footer-links li { margin-bottom: var(--space-sm); }
+        .footer-links a { color: rgba(253, 246, 227, 0.7); transition: color 0.2s ease; }
+        .footer-links a:hover { color: var(--warm-cream); }
+        .footer-social { display: flex; gap: var(--space-md); }
+        
+        .footer-social a {
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: rgba(253, 246, 227, 0.1);
+            color: var(--warm-cream);
+            transition: all 0.2s ease;
+        }
+        
+        .footer-social a:hover { background: var(--burnt-orange); }
+        .footer-social svg { width: 20px; height: 20px; }
+        
+        .footer-bottom {
+            padding-top: var(--space-xl);
+            border-top: 1px solid rgba(253, 246, 227, 0.1);
+            text-align: center;
+            color: rgba(253, 246, 227, 0.5);
+            font-size: 0.875rem;
+        }
+        
+        /* Mobile */
+        @media (max-width: 968px) {
+            .recipe-hero { grid-template-columns: 1fr; }
+            .recipe-content { grid-template-columns: 1fr; }
+            .recipe-sidebar { position: static; }
+            .about-content { grid-template-columns: 1fr; }
+            .footer-content { grid-template-columns: 1fr; text-align: center; }
+            .footer-brand p { margin: 0 auto; }
+            .footer-social { justify-content: center; }
+            .browse-layout { grid-template-columns: 1fr; }
+            .browse-filters { position: static; }
+        }
+        
+        @media (max-width: 1200px) {
+            /* Hide desktop nav elements on mobile/tablet */
+            .floating-nav { display: none !important; }
+            .header { display: none !important; }
+            
+            /* Show floating hamburger (always visible on mobile/tablet) */
+            .floating-hamburger { display: flex; }
+            
+            /* Mobile header appears on scroll (controlled by JS) */
+            .mobile-header { 
+                display: block;
+                transform: translateY(-100%);
+                transition: transform 0.3s ease;
+            }
+            .mobile-header.visible {
+                transform: translateY(0);
+            }
+            
+            /* No extra padding at top since hamburger floats */
+            .hero { padding-top: var(--space-2xl); }
+            
+            /* Pages that don't have hero need padding when header shows */
+            .search-results { padding-top: 80px; }
+            .recipe-page { padding-top: 80px; }
+            .about-page { padding-top: var(--space-3xl); }
+            .contact-page { padding-top: var(--space-3xl); }
+        }
+        
+        @media (max-width: 768px) {
+            .about-facts { grid-template-columns: 1fr; }
+            
+            /* Search box stays horizontal */
+            .search-input {
+                padding: var(--space-sm) var(--space-md);
+                font-size: 0.9rem;
+            }
+            
+            .search-btn {
+                padding: var(--space-sm) var(--space-md);
+            }
+            
+            .search-btn span {
+                display: none;
+            }
+            
+            /* Recipe meta grid on mobile */
+            .recipe-meta-detailed {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: var(--space-md);
+                text-align: center;
+            }
+            
+            .recipe-meta-item {
+                padding: var(--space-sm);
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .recipe-meta-detailed {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            
+            .contact-email {
+                font-size: 1rem;
+                padding: var(--space-sm) var(--space-md);
+            }
+        }
+        
+        .no-results {
+            text-align: center;
+            padding: var(--space-3xl);
+            color: var(--soft-brown);
+            grid-column: 1 / -1;
+        }
+        
+        .no-results svg {
+            width: 64px;
+            height: 64px;
+            margin-bottom: var(--space-lg);
+            color: var(--light-warm-gray);
+        }
+        
+        .toast {
+            position: fixed;
+            bottom: var(--space-xl);
+            right: var(--space-xl);
+            background: var(--warm-brown);
+            color: white;
+            padding: var(--space-md) var(--space-xl);
+            border-radius: var(--radius-md);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+        
+        .toast.show { transform: translateY(0); opacity: 1; }
+        .toast.success { background: #2E7D32; }
+        .toast.error { background: #C62828; }
+    </style>
+</head>
+<body>
+    <!-- Floating Navigation (always visible at top) -->
+    <nav class="floating-nav" id="floatingNav">
+        <a href="#" class="nav-link" onclick="showBrowse(event)">Browse</a>
+        <a href="#" class="nav-link" onclick="showAbout(event)">About</a>
+        <a href="#" class="nav-link" onclick="showContact(event)">Contact</a>
+        <div class="social-links">
+            <a href="https://instagram.com/doublycooked" target="_blank" class="social-link" aria-label="Instagram">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="2" y="2" width="20" height="20" rx="5"/>
+                    <circle cx="12" cy="12" r="4"/>
+                    <circle cx="18" cy="6" r="1" fill="currentColor"/>
+                </svg>
+            </a>
+            <a href="https://bsky.app/profile/doublycooked.bsky.social" target="_blank" class="social-link" aria-label="Bluesky">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 10.8c-1.087-2.114-4.046-6.053-6.798-7.995C2.566.944 1.561 1.266.902 1.565.139 1.908 0 3.08 0 3.768c0 .69.378 5.65.624 6.479.815 2.736 3.713 3.66 6.383 3.364.136-.02.275-.039.415-.056-.138.022-.276.04-.415.056-3.912.58-7.387 2.005-2.83 7.078 5.013 5.19 6.87-1.113 7.823-4.308.953 3.195 2.05 9.271 7.733 4.308 4.267-4.308 1.172-6.498-2.74-7.078a8.741 8.741 0 0 1-.415-.056c.14.017.279.036.415.056 2.67.297 5.568-.628 6.383-3.364.246-.828.624-5.79.624-6.478 0-.69-.139-1.861-.902-2.206-.659-.298-1.664-.62-4.3 1.24C16.046 4.748 13.087 8.687 12 10.8Z"/>
+                </svg>
+            </a>
+            <a href="https://tiktok.com/@doublycooked" target="_blank" class="social-link" aria-label="TikTok">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/>
+                </svg>
+            </a>
+            <a href="https://youtube.com/@doublycooked" target="_blank" class="social-link" aria-label="YouTube">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                </svg>
+            </a>
+        </div>
+    </nav>
+
+    <!-- Mobile Header (always visible on mobile) -->
+    <header class="mobile-header" id="mobileHeader">
+        <div class="mobile-header-inner">
+            <a href="#" class="logo" onclick="showHome(event)">
+                <img class="logo-icon" src="logo.png" alt="Doubly Cooked">
+                <span class="logo-text">Doubly Cooked</span>
+            </a>
+            <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="3" y1="6" x2="21" y2="6"/>
+                    <line x1="3" y1="12" x2="21" y2="12"/>
+                    <line x1="3" y1="18" x2="21" y2="18"/>
+                </svg>
+            </button>
+        </div>
+    </header>
+    
+    <!-- Floating Hamburger Button (mobile only, always visible at top) -->
+    <button class="floating-hamburger" id="floatingHamburger" onclick="toggleMobileMenu()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="3" y1="6" x2="21" y2="6"/>
+            <line x1="3" y1="12" x2="21" y2="12"/>
+            <line x1="3" y1="18" x2="21" y2="18"/>
+        </svg>
+    </button>
+    
+    <!-- Mobile Menu (fullscreen overlay) -->
+    <nav class="mobile-menu" id="mobileMenu">
+        <button class="mobile-menu-close" onclick="toggleMobileMenu()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="18" y1="6" x2="6" y2="18"/>
+                <line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+        </button>
+        
+        <div class="mobile-menu-brand">
+            <img class="mobile-menu-logo" src="logo.png" alt="Doubly Cooked">
+            <span class="mobile-menu-title">Doubly Cooked</span>
+            <span class="mobile-menu-tagline">One kitchen, two Cooks.</span>
+        </div>
+        
+        <div class="mobile-menu-nav">
+            <a href="#" onclick="showHome(event)">Home</a>
+            <a href="#" onclick="showBrowse(event)">Browse</a>
+            <a href="#" onclick="showAbout(event)">About</a>
+            <a href="#" onclick="showContact(event)">Contact</a>
+        </div>
+        
+        <div class="mobile-menu-footer">
+            <div class="social-links">
+                <a href="https://instagram.com/doublycooked" target="_blank" class="social-link" aria-label="Instagram">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="2" y="2" width="20" height="20" rx="5"/>
+                        <circle cx="12" cy="12" r="4"/>
+                        <circle cx="18" cy="6" r="1" fill="currentColor"/>
+                    </svg>
+                </a>
+                <a href="https://bsky.app/profile/doublycooked.bsky.social" target="_blank" class="social-link" aria-label="Bluesky">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 10.8c-1.087-2.114-4.046-6.053-6.798-7.995C2.566.944 1.561 1.266.902 1.565.139 1.908 0 3.08 0 3.768c0 .69.378 5.65.624 6.479.815 2.736 3.713 3.66 6.383 3.364.136-.02.275-.039.415-.056-.138.022-.276.04-.415.056-3.912.58-7.387 2.005-2.83 7.078 5.013 5.19 6.87-1.113 7.823-4.308.953 3.195 2.05 9.271 7.733 4.308 4.267-4.308 1.172-6.498-2.74-7.078a8.741 8.741 0 0 1-.415-.056c.14.017.279.036.415.056 2.67.297 5.568-.628 6.383-3.364.246-.828.624-5.79.624-6.478 0-.69-.139-1.861-.902-2.206-.659-.298-1.664-.62-4.3 1.24C16.046 4.748 13.087 8.687 12 10.8Z"/>
+                    </svg>
+                </a>
+                <a href="https://tiktok.com/@doublycooked" target="_blank" class="social-link" aria-label="TikTok">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/>
+                    </svg>
+                </a>
+                <a href="https://youtube.com/@doublycooked" target="_blank" class="social-link" aria-label="YouTube">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                    </svg>
+                </a>
+            </div>
+            <p class="mobile-menu-credit">Made with ❤️ by Garrett & Hunter Cook</p>
+        </div>
+    </nav>
+
+    <!-- Desktop Header (appears on scroll) -->
+    <header class="header" id="mainHeader">
+        <div class="container header-inner">
+            <a href="#" class="logo" onclick="showHome(event)">
+                <img class="logo-icon" src="logo.png" alt="Doubly Cooked">
+                <span class="logo-text">Doubly Cooked</span>
+            </a>
+            
+            <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="3" y1="6" x2="21" y2="6"/>
+                    <line x1="3" y1="12" x2="21" y2="12"/>
+                    <line x1="3" y1="18" x2="21" y2="18"/>
+                </svg>
+            </button>
+            
+            <nav class="nav" id="mainNav">
+                <a href="#" class="nav-link mobile-only" onclick="showHome(event)">Home</a>
+                <a href="#" class="nav-link" onclick="showBrowse(event)">Browse</a>
+                <a href="#" class="nav-link" onclick="showAbout(event)">About</a>
+                <a href="#" class="nav-link" onclick="showContact(event)">Contact</a>
+                <div class="social-links">
+                    <a href="https://instagram.com/doublycooked" target="_blank" class="social-link" aria-label="Instagram">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="2" y="2" width="20" height="20" rx="5"/>
+                            <circle cx="12" cy="12" r="4"/>
+                            <circle cx="18" cy="6" r="1" fill="currentColor"/>
+                        </svg>
+                    </a>
+                    <a href="https://bsky.app/profile/doublycooked.bsky.social" target="_blank" class="social-link" aria-label="Bluesky">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 10.8c-1.087-2.114-4.046-6.053-6.798-7.995C2.566.944 1.561 1.266.902 1.565.139 1.908 0 3.08 0 3.768c0 .69.378 5.65.624 6.479.815 2.736 3.713 3.66 6.383 3.364.136-.02.275-.039.415-.056-.138.022-.276.04-.415.056-3.912.58-7.387 2.005-2.83 7.078 5.013 5.19 6.87-1.113 7.823-4.308.953 3.195 2.05 9.271 7.733 4.308 4.267-4.308 1.172-6.498-2.74-7.078a8.741 8.741 0 0 1-.415-.056c.14.017.279.036.415.056 2.67.297 5.568-.628 6.383-3.364.246-.828.624-5.79.624-6.478 0-.69-.139-1.861-.902-2.206-.659-.298-1.664-.62-4.3 1.24C16.046 4.748 13.087 8.687 12 10.8Z"/>
+                        </svg>
+                    </a>
+                    <a href="https://tiktok.com/@doublycooked" target="_blank" class="social-link" aria-label="TikTok">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/>
+                        </svg>
+                    </a>
+                    <a href="https://youtube.com/@doublycooked" target="_blank" class="social-link" aria-label="YouTube">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                        </svg>
+                    </a>
+                </div>
+            </nav>
+        </div>
+    </header>
+    
+    <!-- Main Content -->
+    <main id="mainContent">
+        <!-- Home Page -->
+        <div id="homePage">
+            <section class="hero">
+                <div class="container hero-content">
+                    <div class="hero-brand">
+                        <div class="hero-logo">
+                            <img src="logo.png" alt="Doubly Cooked Logo">
+                        </div>
+                        <h1 class="hero-title">
+                            Doubly<span class="accent">Cooked</span>
+                        </h1>
+                        <p class="hero-tagline">One kitchen, two Cooks.</p>
+                    </div>
+                    <div class="hero-divider"></div>
+                    <p class="hero-subtitle">Home-tested recipes from Garrett and Hunter Cook — made with love, meant to be shared.</p>
+                    
+                    <div class="search-container">
+                        <form class="search-box" onsubmit="performSearch(event)">
+                            <input type="text" class="search-input" id="searchInput" placeholder="Search recipes or ingredients..." autocomplete="off">
+                            <button type="submit" class="search-btn">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="11" cy="11" r="8"/>
+                                    <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                                </svg>
+                                <span>Search</span>
+                            </button>
+                        </form>
+                        <a href="#" class="browse-all-link" onclick="showBrowse(event)">
+                            <span>Browse all recipes</span>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="5" y1="12" x2="19" y2="12"/>
+                                <polyline points="12 5 19 12 12 19"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </section>
+            
+            <section class="section">
+                <div class="container">
+                    <div class="section-header">
+                        <h2 class="section-title">Featured Recipes</h2>
+                    </div>
+                    
+                    <div class="recipe-grid" id="featuredGrid"></div>
+                    
+                    <div class="ad-container">
+                        <div class="ad-placeholder">
+                            <!-- GOOGLE ADSENSE: Replace with your ad code -->
+                            <p>Advertisement Space</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+        
+        <!-- Search Results -->
+        <section class="search-results" id="searchResults">
+            <div class="container">
+                <button class="back-btn" onclick="goBackFromSearch()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="19" y1="12" x2="5" y2="12"/>
+                        <polyline points="12 19 5 12 12 5"/>
+                    </svg>
+                    Back
+                </button>
+                
+                <div class="search-results-header">
+                    <h2>Search Results</h2>
+                    <p class="search-results-count" id="searchResultsCount"></p>
+                </div>
+                
+                <div class="recipe-grid" id="searchResultsGrid"></div>
+            </div>
+        </section>
+        
+        <!-- Browse Page -->
+        <section class="browse-page" id="browsePage">
+            <div class="container">
+                <button class="back-btn" onclick="showHome()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="19" y1="12" x2="5" y2="12"/>
+                        <polyline points="12 19 5 12 12 5"/>
+                    </svg>
+                    Back
+                </button>
+                
+                <div class="browse-header">
+                    <h1>Browse Recipes</h1>
+                    <p>Explore our collection of tried-and-true recipes</p>
+                </div>
+                
+                <div class="browse-layout">
+                    <aside class="browse-filters">
+                        <div class="filter-section">
+                            <h3>Search</h3>
+                            <input type="text" class="filter-search" id="browseSearchInput" placeholder="Search recipes..." oninput="applyBrowseFilters()">
+                        </div>
+                        
+                        <div class="filter-section">
+                            <h3>Cuisine</h3>
+                            <div class="filter-options" id="cuisineFilters"></div>
+                        </div>
+                        
+                        <div class="filter-section">
+                            <h3>Course</h3>
+                            <div class="filter-options" id="courseFilters"></div>
+                        </div>
+                        
+                        <div class="filter-section">
+                            <h3>Rating</h3>
+                            <div class="filter-options" id="ratingFilters">
+                                <label class="filter-checkbox">
+                                    <input type="checkbox" value="4.5" onchange="applyBrowseFilters()">
+                                    <span>4.5+ stars</span>
+                                </label>
+                                <label class="filter-checkbox">
+                                    <input type="checkbox" value="4" onchange="applyBrowseFilters()">
+                                    <span>4+ stars</span>
+                                </label>
+                                <label class="filter-checkbox">
+                                    <input type="checkbox" value="3.5" onchange="applyBrowseFilters()">
+                                    <span>3.5+ stars</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="filter-section">
+                            <h3>Time</h3>
+                            <div class="filter-options" id="timeFilters">
+                                <label class="filter-checkbox">
+                                    <input type="checkbox" value="30" onchange="applyBrowseFilters()">
+                                    <span>Under 30 mins</span>
+                                </label>
+                                <label class="filter-checkbox">
+                                    <input type="checkbox" value="60" onchange="applyBrowseFilters()">
+                                    <span>Under 1 hour</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <button class="clear-filters-btn" onclick="clearBrowseFilters()">Clear All Filters</button>
+                    </aside>
+                    
+                    <div class="browse-results">
+                        <div class="browse-results-header">
+                            <p class="browse-results-count" id="browseResultsCount">Showing all recipes</p>
+                            <div class="browse-sort-controls">
+                                <select class="browse-sort" id="browseSort" onchange="applyBrowseFilters()">
+                                    <option value="name">Sort by Name</option>
+                                    <option value="rating">Sort by Rating</option>
+                                    <option value="time">Sort by Time</option>
+                                </select>
+                                <button class="sort-order-btn" id="sortOrderBtn" onclick="toggleSortOrder()" title="Toggle ascending/descending">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M12 5v14M5 12l7 7 7-7"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="recipe-grid" id="browseGrid"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Recipe Page -->
+        <article class="recipe-page" id="recipePage">
+            <div class="container">
+                <button class="back-btn" onclick="goBackFromRecipe()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="19" y1="12" x2="5" y2="12"/>
+                        <polyline points="12 19 5 12 12 5"/>
+                    </svg>
+                    Back
+                </button>
+                
+                <div id="recipeContent"></div>
+                
+                <div class="ad-container">
+                    <div class="ad-placeholder">
+                        <p>Advertisement Space</p>
+                    </div>
+                </div>
+                
+                <section class="reviews-section" id="reviewsSection">
+                    <div class="reviews-header">
+                        <h2>Reviews</h2>
+                    </div>
+                    
+                    <div class="review-form" id="reviewForm">
+                        <h3>Leave a Review</h3>
+                        <form onsubmit="submitReview(event)">
+                            <div class="form-group">
+                                <label>Your Name</label>
+                                <input type="text" id="reviewerName" required placeholder="Enter your name">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>Rating</label>
+                                <div class="star-rating-input" id="starRatingInput" onmouseleave="resetStarHover()">
+                                    <button type="button" onclick="setRating(1)" onmouseenter="hoverRating(1)"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></button>
+                                    <button type="button" onclick="setRating(2)" onmouseenter="hoverRating(2)"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></button>
+                                    <button type="button" onclick="setRating(3)" onmouseenter="hoverRating(3)"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></button>
+                                    <button type="button" onclick="setRating(4)" onmouseenter="hoverRating(4)"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></button>
+                                    <button type="button" onclick="setRating(5)" onmouseenter="hoverRating(5)"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></button>
+                                </div>
+                                <input type="hidden" id="ratingValue" value="0">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>Your Review</label>
+                                <textarea id="reviewText" required placeholder="Share your experience..."></textarea>
+                            </div>
+                            
+                            <!-- reCAPTCHA: Replace YOUR_RECAPTCHA_SITE_KEY with your key -->
+                            <div class="form-group">
+                                <div class="g-recaptcha" data-sitekey="YOUR_RECAPTCHA_SITE_KEY"></div>
+                            </div>
+                            
+                            <button type="submit" class="submit-btn">Submit Review</button>
+                        </form>
+                    </div>
+                    
+                    <div class="reviews-list" id="reviewsList"></div>
+                </section>
+            </div>
+        </article>
+        
+        <!-- About Page -->
+        <section class="about-page" id="aboutPage">
+            <div class="container">
+                <div class="about-hero">
+                    <h1>About <span style="color: var(--burnt-orange)">Doubly Cooked</span></h1>
+                    <p>Two cooks. One kitchen. Infinite possibilities.</p>
+                </div>
+                
+                <div class="about-content">
+                    <div class="about-image">
+                        <img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=600&h=600&fit=crop" alt="Garrett and Hunter in the kitchen">
+                    </div>
+                    
+                    <div class="about-text">
+                        <p>Welcome to Doubly Cooked! We're Garrett and Hunter Cook, a gay couple living in beautiful Oregon who share an unbridled passion for cooking and baking. What started as late-night experiments in our tiny apartment kitchen has blossomed into this collection of recipes we're thrilled to share with you.</p>
+                        
+                        <p>When we're not covered in flour or perfecting our sourdough technique, you'll find us hiking the stunning trails of the Pacific Northwest, tending to our ever-growing jungle of houseplants, or being bossed around by our three cats: Mochi, Basil, and Thyme (yes, we named two of them after herbs – we couldn't help ourselves).</p>
+                        
+                        <p>Every recipe on Doubly Cooked has been tested at least twice – hence the name! We believe that good food should be accessible, that imperfect is often perfect, and that there's always room for a little extra butter. We hope our recipes bring warmth to your table and joy to your kitchen.</p>
+                        
+                        <p>Happy cooking!</p>
+                        <p><em>— Garrett & Hunter</em></p>
+                        
+                        <div class="about-facts">
+                            <div class="about-fact">
+                                <div class="about-fact-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                                        <polyline points="9 22 9 12 15 12 15 22"/>
+                                    </svg>
+                                </div>
+                                <h4>Oregon</h4>
+                                <p>Pacific Northwest living</p>
+                            </div>
+                            <div class="about-fact">
+                                <div class="about-fact-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                                    </svg>
+                                </div>
+                                <h4>3 Cats</h4>
+                                <p>Mochi, Basil & Thyme</p>
+                            </div>
+                            <div class="about-fact">
+                                <div class="about-fact-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <polyline points="20 6 9 17 4 12"/>
+                                    </svg>
+                                </div>
+                                <h4>Doubly Tested</h4>
+                                <p>Every single recipe</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Contact Page -->
+        <section class="contact-page" id="contactPage">
+            <div class="container">
+                <div class="contact-hero">
+                    <h1>Get in <span style="color: var(--burnt-orange)">Touch</span></h1>
+                    <p>We'd love to hear from you!</p>
+                </div>
+                
+                <div class="contact-content">
+                    <div class="contact-card">
+                        <div class="contact-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                                <polyline points="22,6 12,13 2,6"/>
+                            </svg>
+                        </div>
+                        <h3>Email Us</h3>
+                        <p>Have a question, recipe suggestion, or just want to say hi? Drop us a line!</p>
+                        <a href="mailto:garrett@garretthaines.info" class="contact-email">garrett@garretthaines.info</a>
+                    </div>
+                    
+                    <div class="contact-social-section">
+                        <h3>Or find us on social media</h3>
+                        <div class="contact-social-links">
+                            <a href="https://instagram.com/doublycooked" target="_blank" class="contact-social-btn">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="2" y="2" width="20" height="20" rx="5"/>
+                                    <circle cx="12" cy="12" r="4"/>
+                                    <circle cx="18" cy="6" r="1" fill="currentColor"/>
+                                </svg>
+                                Instagram
+                            </a>
+                            <a href="https://bsky.app/profile/doublycooked.bsky.social" target="_blank" class="contact-social-btn">
+                                <svg viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M12 10.8c-1.087-2.114-4.046-6.053-6.798-7.995C2.566.944 1.561 1.266.902 1.565.139 1.908 0 3.08 0 3.768c0 .69.378 5.65.624 6.479.815 2.736 3.713 3.66 6.383 3.364.136-.02.275-.039.415-.056-.138.022-.276.04-.415.056-3.912.58-7.387 2.005-2.83 7.078 5.013 5.19 6.87-1.113 7.823-4.308.953 3.195 2.05 9.271 7.733 4.308 4.267-4.308 1.172-6.498-2.74-7.078a8.741 8.741 0 0 1-.415-.056c.14.017.279.036.415.056 2.67.297 5.568-.628 6.383-3.364.246-.828.624-5.79.624-6.478 0-.69-.139-1.861-.902-2.206-.659-.298-1.664-.62-4.3 1.24C16.046 4.748 13.087 8.687 12 10.8Z"/>
+                                </svg>
+                                Bluesky
+                            </a>
+                            <a href="https://tiktok.com/@doublycooked" target="_blank" class="contact-social-btn">
+                                <svg viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/>
+                                </svg>
+                                TikTok
+                            </a>
+                            <a href="https://youtube.com/@doublycooked" target="_blank" class="contact-social-btn">
+                                <svg viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                                </svg>
+                                YouTube
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <span class="logo-text">Doubly Cooked</span>
+                    <p>Delicious recipes from our kitchen to yours, doubly tested and loved.</p>
+                </div>
+                
+                <div class="footer-links">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#" onclick="showHome(event)">Home</a></li>
+                        <li><a href="#" onclick="showAbout(event)">About Us</a></li>
+                        <li><a href="#" onclick="showContact(event)">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-links">
+                    <h4>Follow Us</h4>
+                    <div class="footer-social">
+                        <a href="https://instagram.com/doublycooked" target="_blank" aria-label="Instagram">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="2" y="2" width="20" height="20" rx="5"/>
+                                <circle cx="12" cy="12" r="4"/>
+                            </svg>
+                        </a>
+                        <a href="https://bsky.app/profile/doublycooked.bsky.social" target="_blank" aria-label="Bluesky">
+                            <svg viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 10.8c-1.087-2.114-4.046-6.053-6.798-7.995C2.566.944 1.561 1.266.902 1.565.139 1.908 0 3.08 0 3.768c0 .69.378 5.65.624 6.479.815 2.736 3.713 3.66 6.383 3.364.136-.02.275-.039.415-.056-.138.022-.276.04-.415.056-3.912.58-7.387 2.005-2.83 7.078 5.013 5.19 6.87-1.113 7.823-4.308.953 3.195 2.05 9.271 7.733 4.308 4.267-4.308 1.172-6.498-2.74-7.078a8.741 8.741 0 0 1-.415-.056c.14.017.279.036.415.056 2.67.297 5.568-.628 6.383-3.364.246-.828.624-5.79.624-6.478 0-.69-.139-1.861-.902-2.206-.659-.298-1.664-.62-4.3 1.24C16.046 4.748 13.087 8.687 12 10.8Z"/>
+                            </svg>
+                        </a>
+                        <a href="https://tiktok.com/@doublycooked" target="_blank" aria-label="TikTok">
+                            <svg viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/>
+                            </svg>
+                        </a>
+                        <a href="https://youtube.com/@doublycooked" target="_blank" aria-label="YouTube">
+                            <svg viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2024 Doubly Cooked. Made with ❤️ by Garrett & Hunter Cook.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <div class="toast" id="toast"></div>
+    
+    <script>
+        // ============================================
+        // FIREBASE CONFIGURATION
+        // ============================================
+        // 
+        // TO ENABLE FIRESTORE:
+        // 1. Create a Firebase project at https://console.firebase.google.com
+        // 2. Enable Firestore Database (start in test mode or set up rules)
+        // 3. Copy your config from Project Settings > General > Your apps > Web app
+        // 4. Replace the placeholder values below
+        // 5. Set USE_FIRESTORE to true
+        // 6. Uncomment firebase.initializeApp and db lines
+        //
+        // FIRESTORE SECURITY RULES (recommended):
+        // rules_version = '2';
+        // service cloud.firestore {
+        //   match /databases/{database}/documents {
+        //     match /reviews/{reviewId} {
+        //       allow read: if true;
+        //       allow create: if request.resource.data.keys().hasAll(['recipeId', 'name', 'rating', 'text', 'date'])
+        //                     && request.resource.data.rating >= 1
+        //                     && request.resource.data.rating <= 5;
+        //       allow update, delete: if false;
+        //     }
+        //   }
+        // }
+        //
+        // FIRESTORE INDEX (create in Firebase Console > Firestore > Indexes):
+        // Collection: reviews
+        // Fields: recipeId (Ascending), date (Descending)
+        // ============================================
+        
+        const USE_FIRESTORE = false; // Set to true when ready
+        
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_PROJECT_ID.appspot.com",
+            messagingSenderId: "YOUR_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+        
+        // Uncomment these lines when you add your config:
+        // firebase.initializeApp(firebaseConfig);
+        // const db = firebase.firestore();
+        
+        // ============================================
+        // RECIPES DATA
+        // ============================================
+        /*
+            TO USE EXTERNAL FILE:
+            1. Create recipes.json with the recipes array
+            2. Replace recipes variable with:
+            
+            let recipes = [];
+            async function loadRecipes() {
+                const response = await fetch('./recipes.json');
+                recipes = await response.json();
+                init();
+            }
+            loadRecipes();
+            
+            3. Remove the init() call at bottom
+        */
+        
+        const recipes = [
+            {
+                id: "sourdough-bread",
+                name: "Classic Sourdough Bread",
+                author: "Garrett Cook",
+                image: "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=600&h=450&fit=crop",
+                description: "Our go-to sourdough recipe, perfected over two years of weekend baking sessions.",
+                prepTime: "30 mins",
+                cookTime: "45 mins",
+                totalTime: "24 hours",
+                servings: "1 loaf",
+                featured: true,
+                isNew: false,
+                category: "Bread",
+                cuisine: "American",
+                course: "Side",
+                ingredients: ["500g bread flour", "350g water", "100g active sourdough starter", "10g salt", "Rice flour for dusting"],
+                directions: [
+                    "Mix flour and water until combined. Cover and rest 30 minutes (autolyse).",
+                    "Add starter and mix well. Let rest 30 minutes.",
+                    "Add salt and mix thoroughly. Let rest 30 minutes.",
+                    "Perform 4 sets of stretch and folds, 30 minutes apart.",
+                    "Cover and bulk ferment 4-6 hours until doubled.",
+                    "Shape into a round and rest 20 minutes.",
+                    "Final shape and place in floured banneton.",
+                    "Refrigerate overnight (8-12 hours).",
+                    "Preheat oven to 500°F with Dutch oven for 1 hour.",
+                    "Score dough and bake covered 20 minutes.",
+                    "Remove lid, bake 20-25 minutes until golden.",
+                    "Cool completely before slicing."
+                ],
+                averageRating: 4.8,
+                reviewCount: 24
+            },
+            {
+                id: "brown-butter-cookies",
+                name: "Brown Butter Chocolate Chip Cookies",
+                author: "Hunter Cook",
+                image: "https://images.unsplash.com/photo-1499636136210-6f4ee915583e?w=600&h=450&fit=crop",
+                description: "These cookies have ruined all other chocolate chip cookies for us.",
+                prepTime: "20 mins",
+                cookTime: "12 mins",
+                totalTime: "2 hours",
+                servings: "24 cookies",
+                featured: true,
+                isNew: false,
+                category: "Dessert",
+                cuisine: "American",
+                course: "Dessert",
+                ingredients: ["2 1/4 cups flour", "1 cup butter", "1 cup brown sugar", "1/2 cup granulated sugar", "2 eggs", "2 tsp vanilla", "1 tsp baking soda", "1 tsp salt", "2 cups chocolate chips", "Flaky sea salt"],
+                directions: [
+                    "Brown butter in saucepan until golden and nutty. Cool 15 minutes.",
+                    "Whisk flour, baking soda, and salt.",
+                    "Mix sugars into brown butter. Add eggs and vanilla.",
+                    "Fold in dry ingredients and chocolate chips.",
+                    "Refrigerate dough at least 1 hour.",
+                    "Preheat oven to 375°F.",
+                    "Scoop 2-tablespoon portions onto lined sheets.",
+                    "Bake 10-12 minutes until edges are golden.",
+                    "Sprinkle with flaky salt. Cool 5 minutes."
+                ],
+                averageRating: 4.9,
+                reviewCount: 42
+            },
+            {
+                id: "mushroom-risotto",
+                name: "Creamy Mushroom Risotto",
+                author: "Garrett Cook",
+                image: "https://images.unsplash.com/photo-1476124369491-e7addf5db371?w=600&h=450&fit=crop",
+                description: "A labor of love that's absolutely worth the stirring.",
+                prepTime: "15 mins",
+                cookTime: "35 mins",
+                totalTime: "50 mins",
+                servings: "4 servings",
+                featured: false,
+                isNew: true,
+                category: "Main",
+                cuisine: "Italian",
+                course: "Entrée",
+                ingredients: ["1 1/2 cups Arborio rice", "8 oz mixed mushrooms", "6 cups warm broth", "1/2 cup white wine", "1 shallot", "3 cloves garlic", "4 tbsp butter", "2 tbsp olive oil", "1/2 cup Parmesan", "2 tbsp fresh thyme", "Salt and pepper"],
+                directions: [
+                    "Sauté mushrooms in butter until golden. Set aside.",
+                    "Cook shallot and garlic in butter until soft.",
+                    "Toast rice 2 minutes until edges translucent.",
+                    "Add wine and stir until absorbed.",
+                    "Add broth one ladle at a time, stirring frequently.",
+                    "When rice is al dente, remove from heat.",
+                    "Stir in mushrooms, Parmesan, and thyme.",
+                    "Season and serve immediately."
+                ],
+                averageRating: 4.7,
+                reviewCount: 18
+            },
+            {
+                id: "lemon-blueberry-scones",
+                name: "Lemon Blueberry Scones",
+                author: "Hunter Cook",
+                image: "https://images.unsplash.com/photo-1558961363-fa8fdf82db35?w=600&h=450&fit=crop",
+                description: "Light, flaky, and bursting with fresh blueberries.",
+                prepTime: "20 mins",
+                cookTime: "18 mins",
+                totalTime: "40 mins",
+                servings: "8 scones",
+                featured: false,
+                isNew: true,
+                category: "Breakfast",
+                cuisine: "British",
+                course: "Breakfast",
+                ingredients: ["2 cups flour", "1/3 cup sugar", "1 tbsp baking powder", "1/2 tsp salt", "6 tbsp cold butter", "1 cup blueberries", "Zest of 2 lemons", "1/2 cup cream", "1 egg", "1 tsp vanilla", "Glaze: 1 cup powdered sugar, 2 tbsp lemon juice"],
+                directions: [
+                    "Preheat oven to 400°F.",
+                    "Whisk flour, sugar, baking powder, salt, and zest.",
+                    "Cut in cold butter until crumbly.",
+                    "Fold in blueberries.",
+                    "Mix cream, egg, and vanilla. Pour over flour mixture.",
+                    "Pat into 8-inch circle, cut into 8 wedges.",
+                    "Bake 16-18 minutes until golden.",
+                    "Drizzle with lemon glaze."
+                ],
+                averageRating: 4.6,
+                reviewCount: 15
+            },
+            {
+                id: "spicy-shakshuka",
+                name: "Spicy Shakshuka",
+                author: "Garrett Cook",
+                image: "https://images.unsplash.com/photo-1590412200988-a436970781fa?w=600&h=450&fit=crop",
+                description: "Our weekend brunch staple with eggs in spiced tomato sauce.",
+                prepTime: "10 mins",
+                cookTime: "25 mins",
+                totalTime: "35 mins",
+                servings: "4 servings",
+                featured: true,
+                isNew: false,
+                category: "Breakfast",
+                cuisine: "Middle Eastern",
+                course: "Breakfast",
+                ingredients: ["28 oz crushed tomatoes", "6 eggs", "1 onion", "1 red bell pepper", "4 cloves garlic", "2 tsp cumin", "2 tsp paprika", "1 tsp cayenne", "1/2 tsp sugar", "3 tbsp olive oil", "Salt and pepper", "Cilantro and feta", "Crusty bread"],
+                directions: [
+                    "Cook onion and pepper in oil until soft.",
+                    "Add garlic and spices, cook 1 minute.",
+                    "Add tomatoes and sugar. Simmer 10 minutes.",
+                    "Make wells and crack in eggs.",
+                    "Cover and cook 5-8 minutes until whites set.",
+                    "Top with feta and cilantro.",
+                    "Serve with crusty bread."
+                ],
+                averageRating: 4.5,
+                reviewCount: 12
+            },
+            {
+                id: "honey-garlic-salmon",
+                name: "Honey Garlic Glazed Salmon",
+                author: "Hunter Cook",
+                image: "https://images.unsplash.com/photo-1467003909585-2f8a72700288?w=600&h=450&fit=crop",
+                description: "Quick enough for weeknight, impressive enough for company.",
+                prepTime: "10 mins",
+                cookTime: "15 mins",
+                totalTime: "25 mins",
+                servings: "4 servings",
+                featured: true,
+                isNew: false,
+                category: "Main",
+                cuisine: "Asian Fusion",
+                course: "Entrée",
+                ingredients: ["4 salmon fillets", "1/4 cup honey", "3 tbsp soy sauce", "4 cloves garlic", "1 tbsp rice vinegar", "1 tsp sesame oil", "2 tbsp olive oil", "1 tsp ginger", "Red pepper flakes", "Sesame seeds and green onions"],
+                directions: [
+                    "Season salmon with salt and pepper.",
+                    "Whisk honey, soy, garlic, vinegar, sesame oil, and ginger.",
+                    "Sear salmon 3 minutes per side.",
+                    "Pour sauce over salmon.",
+                    "Bake at 400°F for 8-10 minutes.",
+                    "Garnish with sesame seeds and green onions."
+                ],
+                averageRating: 4.8,
+                reviewCount: 28
+            }
+        ];
+        
+        // State
+        let currentPage = 'home';
+        let currentRecipe = null;
+        let currentSearchQuery = '';
+        let currentRating = 0;
+        let sortAscending = false;
+        let visibleReviewCount = 3;
+        
+        // Mock reviews
+        const mockReviews = {
+            "sourdough-bread": [
+                { name: "Sarah M.", rating: 5, text: "Finally, a sourdough recipe that works! I've tried so many sourdough recipes over the years and this is the first one that gave me that perfect chewy crumb and crispy crust.", date: "2024-01-20" },
+                { name: "Mike T.", rating: 5, text: "Made this three times - perfect every time!", date: "2024-02-15" },
+                { name: "Jennifer K.", rating: 4, text: "Great recipe! Took me a couple tries to get the timing right, but now it's a weekly staple.", date: "2024-02-28" },
+                { name: "Carlos R.", rating: 5, text: "My family can't believe I made this at home. Better than the bakery!", date: "2024-03-05" },
+                { name: "Amanda P.", rating: 5, text: "The instructions are so clear. Even as a beginner, I got amazing results.", date: "2024-03-12" },
+                { name: "Brian W.", rating: 4, text: "Delicious! The crust is incredible. Will definitely make again.", date: "2024-03-20" },
+                { name: "Lisa H.", rating: 5, text: "This has become my go-to recipe. The overnight method is so convenient.", date: "2024-04-01" },
+                { name: "Tom S.", rating: 5, text: "Absolutely stunning bread. The crumb is perfect!", date: "2024-04-10" }
+            ],
+            "brown-butter-cookies": [
+                { name: "Emma L.", rating: 5, text: "DANGEROUS. Can't stop eating them! The brown butter makes such a difference.", date: "2024-03-01" },
+                { name: "David R.", rating: 5, text: "Family devoured these instantly! Made a double batch and they were gone in two days.", date: "2024-03-10" },
+                { name: "Rachel N.", rating: 5, text: "These are the best chocolate chip cookies I've ever made. The brown butter is genius!", date: "2024-03-15" },
+                { name: "James M.", rating: 4, text: "Incredible flavor! I added a bit more sea salt on top and they were perfection.", date: "2024-03-22" },
+                { name: "Sophie T.", rating: 5, text: "Made these for a bake sale and everyone wanted the recipe!", date: "2024-04-02" },
+                { name: "Kevin B.", rating: 5, text: "The chilling step is key - don't skip it! These cookies are unreal.", date: "2024-04-08" },
+                { name: "Maria G.", rating: 5, text: "My new favorite cookie recipe. The edges are crispy and the middle is chewy.", date: "2024-04-15" }
+            ],
+            "mushroom-risotto": [
+                { name: "Alex P.", rating: 5, text: "Restaurant quality risotto at home! Worth every minute of stirring.", date: "2024-03-18" },
+                { name: "Nina C.", rating: 4, text: "Creamy and delicious. I used vegetable broth and it was still amazing.", date: "2024-03-25" },
+                { name: "Robert F.", rating: 5, text: "My wife said this is better than our favorite Italian restaurant!", date: "2024-04-03" },
+                { name: "Diana L.", rating: 5, text: "The mushroom flavor is incredible. Used a mix of cremini and shiitake.", date: "2024-04-12" }
+            ],
+            "honey-garlic-salmon": [
+                { name: "Chris W.", rating: 5, text: "So quick and so delicious! This is now our weeknight go-to.", date: "2024-04-05" },
+                { name: "Paula D.", rating: 5, text: "The glaze is perfectly balanced. Sweet, savory, and a little spicy.", date: "2024-04-10" },
+                { name: "Marcus J.", rating: 4, text: "Great recipe! I added extra garlic because we're garlic lovers.", date: "2024-04-18" },
+                { name: "Helen T.", rating: 5, text: "Even my kids who don't usually like fish loved this!", date: "2024-04-22" },
+                { name: "Steven K.", rating: 5, text: "Made this for date night - huge hit! Will be making it again.", date: "2024-04-28" }
+            ]
+        };
+        
+        // Initialize
+        function init() {
+            renderFeaturedRecipes();
+            window.addEventListener('popstate', handlePopState);
+            
+            // Scroll handling for header visibility
+            setupScrollBehavior();
+            
+            const urlParams = new URLSearchParams(window.location.search);
+            const recipeId = urlParams.get('recipe');
+            const searchQuery = urlParams.get('search');
+            
+            if (recipeId) {
+                const recipe = recipes.find(r => r.id === recipeId);
+                if (recipe) showRecipe(recipe, false);
+            } else if (searchQuery) {
+                document.getElementById('searchInput').value = searchQuery;
+                performSearch(null, false);
+            }
+        }
+        
+        // Scroll behavior for header
+        function setupScrollBehavior() {
+            const desktopHeader = document.getElementById('mainHeader');
+            const floatingNav = document.getElementById('floatingNav');
+            const mobileHeader = document.getElementById('mobileHeader');
+            const floatingHamburger = document.getElementById('floatingHamburger');
+            const heroSection = document.querySelector('.hero');
+            let ticking = false;
+            let lastIsMobile = null;
+            
+            function updateHeader() {
+                const scrollY = window.scrollY;
+                const isMobile = window.innerWidth <= 1200;
+                // Show header earlier - at 40% of hero height
+                const threshold = heroSection ? heroSection.offsetTop + (heroSection.offsetHeight * 0.4) : 150;
+                
+                // If switching between mobile/desktop, reset both sets of headers
+                if (lastIsMobile !== null && lastIsMobile !== isMobile) {
+                    // Reset all header states
+                    desktopHeader.classList.remove('visible');
+                    floatingNav.classList.remove('hidden');
+                    mobileHeader.classList.remove('visible');
+                    floatingHamburger.classList.remove('hidden');
+                }
+                lastIsMobile = isMobile;
+                
+                if (isMobile) {
+                    // Ensure desktop elements are hidden on mobile
+                    desktopHeader.classList.remove('visible');
+                    floatingNav.classList.add('hidden');
+                    
+                    // Mobile: show mobile header after scrolling, hide floating hamburger
+                    if (scrollY > threshold) {
+                        mobileHeader.classList.add('visible');
+                        floatingHamburger.classList.add('hidden');
+                    } else {
+                        mobileHeader.classList.remove('visible');
+                        floatingHamburger.classList.remove('hidden');
+                    }
+                } else {
+                    // Ensure mobile elements are hidden on desktop
+                    mobileHeader.classList.remove('visible');
+                    floatingHamburger.classList.add('hidden');
+                    
+                    // Desktop: show desktop header after scrolling, hide floating nav
+                    if (scrollY > threshold) {
+                        desktopHeader.classList.add('visible');
+                        floatingNav.classList.add('hidden');
+                    } else {
+                        desktopHeader.classList.remove('visible');
+                        floatingNav.classList.remove('hidden');
+                    }
+                }
+                
+                ticking = false;
+            }
+            
+            window.addEventListener('scroll', () => {
+                if (!ticking) {
+                    requestAnimationFrame(updateHeader);
+                    ticking = true;
+                }
+            });
+            
+            window.addEventListener('resize', updateHeader);
+            
+            // Initial check
+            updateHeader();
+        }
+        
+        // Safe history pushState (handles iframe restrictions)
+        function safePushState(state, title, url) {
+            try {
+                history.pushState(state, title, url);
+            } catch (e) {
+                // Silently fail in restricted environments (e.g., iframes)
+                console.log('History API not available in this context');
+            }
+        }
+        
+        // Navigation
+        function showHome(event) {
+            if (event) event.preventDefault();
+            hideMobileMenu();
+            document.getElementById('homePage').style.display = 'block';
+            document.getElementById('searchResults').classList.remove('active');
+            document.getElementById('recipePage').classList.remove('active');
+            document.getElementById('browsePage').classList.remove('active');
+            document.getElementById('aboutPage').classList.remove('active');
+            document.getElementById('contactPage').classList.remove('active');
+            currentPage = 'home';
+            safePushState({ page: 'home' }, '', window.location.pathname);
+            window.scrollTo(0, 0);
+            resetHeaderVisibility();
+        }
+        
+        function showAbout(event) {
+            if (event) event.preventDefault();
+            hideMobileMenu();
+            document.getElementById('homePage').style.display = 'none';
+            document.getElementById('searchResults').classList.remove('active');
+            document.getElementById('recipePage').classList.remove('active');
+            document.getElementById('browsePage').classList.remove('active');
+            document.getElementById('aboutPage').classList.add('active');
+            document.getElementById('contactPage').classList.remove('active');
+            currentPage = 'about';
+            safePushState({ page: 'about' }, '', '?page=about');
+            window.scrollTo(0, 0);
+        }
+        
+        function showContact(event) {
+            if (event) event.preventDefault();
+            hideMobileMenu();
+            document.getElementById('homePage').style.display = 'none';
+            document.getElementById('searchResults').classList.remove('active');
+            document.getElementById('recipePage').classList.remove('active');
+            document.getElementById('browsePage').classList.remove('active');
+            document.getElementById('aboutPage').classList.remove('active');
+            document.getElementById('contactPage').classList.add('active');
+            currentPage = 'contact';
+            safePushState({ page: 'contact' }, '', '?page=contact');
+            window.scrollTo(0, 0);
+        }
+        
+        function showBrowse(event) {
+            if (event) event.preventDefault();
+            hideMobileMenu();
+            document.getElementById('homePage').style.display = 'none';
+            document.getElementById('searchResults').classList.remove('active');
+            document.getElementById('recipePage').classList.remove('active');
+            document.getElementById('aboutPage').classList.remove('active');
+            document.getElementById('contactPage').classList.remove('active');
+            document.getElementById('browsePage').classList.add('active');
+            currentPage = 'browse';
+            safePushState({ page: 'browse' }, '', '?page=browse');
+            window.scrollTo(0, 0);
+            initBrowseFilters();
+            applyBrowseFilters();
+        }
+        
+        function initBrowseFilters() {
+            // Get unique cuisines and courses from recipes
+            const cuisines = [...new Set(recipes.map(r => r.cuisine).filter(Boolean))];
+            const courses = [...new Set(recipes.map(r => r.course).filter(Boolean))];
+            
+            // Populate cuisine filters
+            const cuisineContainer = document.getElementById('cuisineFilters');
+            cuisineContainer.innerHTML = cuisines.map(cuisine => `
+                <label class="filter-checkbox">
+                    <input type="checkbox" value="${cuisine}" onchange="applyBrowseFilters()">
+                    <span>${cuisine}</span>
+                </label>
+            `).join('');
+            
+            // Populate course filters
+            const courseContainer = document.getElementById('courseFilters');
+            courseContainer.innerHTML = courses.map(course => `
+                <label class="filter-checkbox">
+                    <input type="checkbox" value="${course}" onchange="applyBrowseFilters()">
+                    <span>${course}</span>
+                </label>
+            `).join('');
+        }
+        
+        function applyBrowseFilters() {
+            const searchQuery = document.getElementById('browseSearchInput').value.toLowerCase();
+            const sortBy = document.getElementById('browseSort').value;
+            
+            // Get selected filters
+            const selectedCuisines = [...document.querySelectorAll('#cuisineFilters input:checked')].map(el => el.value);
+            const selectedCourses = [...document.querySelectorAll('#courseFilters input:checked')].map(el => el.value);
+            const selectedRatings = [...document.querySelectorAll('#ratingFilters input:checked')].map(el => parseFloat(el.value));
+            const selectedTimes = [...document.querySelectorAll('#timeFilters input:checked')].map(el => parseInt(el.value));
+            
+            // Filter recipes
+            let filtered = recipes.filter(recipe => {
+                // Search filter
+                if (searchQuery) {
+                    const matchesSearch = recipe.name.toLowerCase().includes(searchQuery) ||
+                        recipe.ingredients.some(ing => ing.toLowerCase().includes(searchQuery)) ||
+                        (recipe.cuisine && recipe.cuisine.toLowerCase().includes(searchQuery)) ||
+                        (recipe.course && recipe.course.toLowerCase().includes(searchQuery));
+                    if (!matchesSearch) return false;
+                }
+                
+                // Cuisine filter
+                if (selectedCuisines.length > 0 && !selectedCuisines.includes(recipe.cuisine)) {
+                    return false;
+                }
+                
+                // Course filter
+                if (selectedCourses.length > 0 && !selectedCourses.includes(recipe.course)) {
+                    return false;
+                }
+                
+                // Rating filter
+                if (selectedRatings.length > 0) {
+                    const minRating = Math.min(...selectedRatings);
+                    if (recipe.averageRating < minRating) return false;
+                }
+                
+                // Time filter
+                if (selectedTimes.length > 0) {
+                    const totalMins = parseTotalTime(recipe.totalTime);
+                    const maxTime = Math.max(...selectedTimes);
+                    if (totalMins > maxTime) return false;
+                }
+                
+                return true;
+            });
+            
+            // Sort recipes
+            if (sortBy === 'rating') {
+                filtered.sort((a, b) => sortAscending ? a.averageRating - b.averageRating : b.averageRating - a.averageRating);
+            } else if (sortBy === 'time') {
+                filtered.sort((a, b) => sortAscending ? parseTotalTime(b.totalTime) - parseTotalTime(a.totalTime) : parseTotalTime(a.totalTime) - parseTotalTime(b.totalTime));
+            } else {
+                filtered.sort((a, b) => sortAscending ? b.name.localeCompare(a.name) : a.name.localeCompare(b.name));
+            }
+            
+            // Update results count
+            const countText = filtered.length === recipes.length 
+                ? `Showing all ${filtered.length} recipes` 
+                : `Showing ${filtered.length} of ${recipes.length} recipes`;
+            document.getElementById('browseResultsCount').textContent = countText;
+            
+            // Render results
+            const grid = document.getElementById('browseGrid');
+            if (filtered.length === 0) {
+                grid.innerHTML = `<div class="no-results"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><h3>No recipes found</h3><p>Try adjusting your filters.</p></div>`;
+            } else {
+                grid.innerHTML = filtered.map(recipe => createRecipeCard(recipe)).join('');
+            }
+        }
+        
+        function toggleSortOrder() {
+            sortAscending = !sortAscending;
+            const btn = document.getElementById('sortOrderBtn');
+            btn.classList.toggle('ascending', sortAscending);
+            btn.title = sortAscending ? 'Currently ascending - click to sort descending' : 'Currently descending - click to sort ascending';
+            applyBrowseFilters();
+        }
+        
+        function parseTotalTime(timeStr) {
+            // Parse time strings like "25 mins", "2 hours", "24 hours"
+            const lower = timeStr.toLowerCase();
+            let mins = 0;
+            
+            const hourMatch = lower.match(/(\d+)\s*hour/);
+            const minMatch = lower.match(/(\d+)\s*min/);
+            
+            if (hourMatch) mins += parseInt(hourMatch[1]) * 60;
+            if (minMatch) mins += parseInt(minMatch[1]);
+            
+            return mins || 999; // Default to high number if unparseable
+        }
+        
+        function clearBrowseFilters() {
+            document.getElementById('browseSearchInput').value = '';
+            document.querySelectorAll('.browse-filters input[type="checkbox"]').forEach(el => el.checked = false);
+            document.getElementById('browseSort').value = 'name';
+            sortAscending = false;
+            document.getElementById('sortOrderBtn').classList.remove('ascending');
+            applyBrowseFilters();
+        }
+        
+        function showRecipe(recipe, addToHistory = true) {
+            currentRecipe = recipe;
+            document.getElementById('homePage').style.display = 'none';
+            document.getElementById('searchResults').classList.remove('active');
+            document.getElementById('browsePage').classList.remove('active');
+            document.getElementById('aboutPage').classList.remove('active');
+            document.getElementById('contactPage').classList.remove('active');
+            document.getElementById('recipePage').classList.add('active');
+            renderRecipe(recipe);
+            loadReviews(recipe.id);
+            currentPage = 'recipe';
+            if (addToHistory) {
+                safePushState({ page: 'recipe', recipeId: recipe.id, searchQuery: currentSearchQuery }, '', `?recipe=${recipe.id}`);
+            }
+            window.scrollTo(0, 0);
+        }
+        
+        function goBackFromRecipe() {
+            if (currentSearchQuery) {
+                showSearchResults(currentSearchQuery, false);
+            } else {
+                showHome();
+            }
+            window.scrollTo(0, 0);
+            resetHeaderVisibility();
+        }
+        
+        function goBackFromSearch() {
+            currentSearchQuery = '';
+            showHome();
+            window.scrollTo(0, 0);
+            resetHeaderVisibility();
+        }
+        
+        function handlePopState(event) {
+            const state = event.state;
+            if (!state || state.page === 'home') showHome();
+            else if (state.page === 'about') showAbout();
+            else if (state.page === 'contact') showContact();
+            else if (state.page === 'browse') showBrowse();
+            else if (state.page === 'search') {
+                currentSearchQuery = state.searchQuery;
+                showSearchResults(state.searchQuery, false);
+            } else if (state.page === 'recipe') {
+                currentSearchQuery = state.searchQuery || '';
+                const recipe = recipes.find(r => r.id === state.recipeId);
+                if (recipe) showRecipe(recipe, false);
+            }
+        }
+        
+        // Search
+        function performSearch(event, addToHistory = true) {
+            if (event) event.preventDefault();
+            const query = document.getElementById('searchInput').value.trim().toLowerCase();
+            if (!query) return;
+            currentSearchQuery = query;
+            showSearchResults(query, addToHistory);
+        }
+        
+        function showSearchResults(query, addToHistory = true) {
+            const results = recipes.filter(recipe => {
+                const nameMatch = recipe.name.toLowerCase().includes(query);
+                const ingredientMatch = recipe.ingredients.some(ing => ing.toLowerCase().includes(query));
+                const categoryMatch = recipe.category.toLowerCase().includes(query);
+                return nameMatch || ingredientMatch || categoryMatch;
+            });
+            
+            document.getElementById('homePage').style.display = 'none';
+            document.getElementById('aboutPage').classList.remove('active');
+            document.getElementById('recipePage').classList.remove('active');
+            document.getElementById('browsePage').classList.remove('active');
+            document.getElementById('contactPage').classList.remove('active');
+            document.getElementById('searchResults').classList.add('active');
+            
+            const grid = document.getElementById('searchResultsGrid');
+            const countEl = document.getElementById('searchResultsCount');
+            
+            countEl.textContent = `Found ${results.length} recipe${results.length !== 1 ? 's' : ''} for "${query}"`;
+            
+            if (results.length === 0) {
+                grid.innerHTML = `<div class="no-results"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><h3>No recipes found</h3><p>Try different ingredients or recipe names.</p></div>`;
+            } else {
+                grid.innerHTML = results.map(recipe => createRecipeCard(recipe)).join('');
+            }
+            
+            currentPage = 'search';
+            if (addToHistory) {
+                safePushState({ page: 'search', searchQuery: query }, '', `?search=${encodeURIComponent(query)}`);
+            }
+            window.scrollTo(0, 0);
+        }
+        
+        // Calculate actual rating and count from reviews
+        // Uses Firestore data if available, falls back to mock data
+        function getRecipeStats(recipeId) {
+            // Check Firestore reviews first (populated when USE_FIRESTORE is true)
+            const reviews = firestoreReviews[recipeId] || mockReviews[recipeId] || [];
+            if (reviews.length === 0) {
+                return { averageRating: 0, reviewCount: 0 };
+            }
+            const totalRating = reviews.reduce((sum, r) => sum + r.rating, 0);
+            return {
+                averageRating: totalRating / reviews.length,
+                reviewCount: reviews.length
+            };
+        }
+        
+        // Rendering
+        function createRecipeCard(recipe) {
+            let badge = '';
+            if (recipe.isNew) {
+                badge = '<span class="recipe-card-badge recipe-card-badge-new">New</span>';
+            } else if (recipe.featured) {
+                badge = '<span class="recipe-card-badge">Featured</span>';
+            }
+            
+            // Get actual stats from reviews (will use Firestore data when connected)
+            const stats = getRecipeStats(recipe.id);
+            const displayRating = stats.reviewCount > 0 ? stats.averageRating : recipe.averageRating;
+            const displayCount = stats.reviewCount > 0 ? stats.reviewCount : recipe.reviewCount;
+            
+            return `
+                <article class="recipe-card" onclick="showRecipe(recipes.find(r => r.id === '${recipe.id}'))">
+                    <div class="recipe-card-image">
+                        <img src="${recipe.image}" alt="${recipe.name}" loading="lazy">
+                        ${badge}
+                    </div>
+                    <div class="recipe-card-content">
+                        <div class="recipe-card-rating">
+                            ${createStars(displayRating)}
+                            <span>${displayRating.toFixed(1)} (${displayCount})</span>
+                        </div>
+                        <h3>${recipe.name}</h3>
+                        <div class="recipe-card-meta">
+                            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>${recipe.totalTime}</span>
+                            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>${recipe.author}</span>
+                        </div>
+                    </div>
+                </article>
+            `;
+        }
+        
+        function createStars(rating) {
+            const full = Math.floor(rating);
+            const partial = rating - full;
+            let stars = '';
+            const uniqueId = Math.random().toString(36).substr(2, 9);
+            
+            // Full stars
+            for (let i = 0; i < full; i++) {
+                stars += '<svg viewBox="0 0 24 24" class="star-full"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>';
+            }
+            
+            // Partial star (if any)
+            if (partial > 0.05 && full < 5) {
+                const percentage = Math.round(partial * 100);
+                stars += `<svg viewBox="0 0 24 24" class="star-partial">
+                    <defs>
+                        <linearGradient id="starGrad${uniqueId}">
+                            <stop offset="${percentage}%" stop-color="var(--terracotta)"/>
+                            <stop offset="${percentage}%" stop-color="var(--border-warm)"/>
+                        </linearGradient>
+                    </defs>
+                    <path fill="url(#starGrad${uniqueId})" d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                </svg>`;
+                
+                // Empty stars after partial
+                for (let i = full + 1; i < 5; i++) {
+                    stars += '<svg viewBox="0 0 24 24" class="star-empty"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>';
+                }
+            } else {
+                // Empty stars (no partial)
+                for (let i = full; i < 5; i++) {
+                    stars += '<svg viewBox="0 0 24 24" class="star-empty"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>';
+                }
+            }
+            
+            return stars;
+        }
+        
+        function renderFeaturedRecipes() {
+            const featured = recipes.filter(r => r.featured);
+            document.getElementById('featuredGrid').innerHTML = featured.map(r => createRecipeCard(r)).join('');
+        }
+        
+        function renderRecipe(recipe) {
+            const container = document.getElementById('recipeContent');
+            
+            // Get actual stats from reviews (will use Firestore data when connected)
+            const stats = getRecipeStats(recipe.id);
+            const displayRating = stats.reviewCount > 0 ? stats.averageRating : recipe.averageRating;
+            const displayCount = stats.reviewCount > 0 ? stats.reviewCount : recipe.reviewCount;
+            
+            container.innerHTML = `
+                <script type="application/ld+json">
+                {
+                    "@context": "https://schema.org/",
+                    "@type": "Recipe",
+                    "name": "${recipe.name}",
+                    "image": "${recipe.image}",
+                    "author": {"@type": "Person", "name": "${recipe.author}"},
+                    "description": "${recipe.description}",
+                    "recipeYield": "${recipe.servings}",
+                    "recipeCategory": "${recipe.category}",
+                    "recipeCuisine": "${recipe.cuisine || ''}",
+                    "recipeIngredient": ${JSON.stringify(recipe.ingredients)},
+                    "aggregateRating": {"@type": "AggregateRating", "ratingValue": "${displayRating.toFixed(1)}", "ratingCount": "${displayCount}"}
+                }
+                <\/script>
+                
+                <div class="recipe-hero">
+                    <div class="recipe-hero-image"><img src="${recipe.image}" alt="${recipe.name}"></div>
+                    <div class="recipe-hero-content">
+                        <h1>${recipe.name}</h1>
+                        <p class="recipe-author">by ${recipe.author}</p>
+                        <div class="recipe-rating-large">
+                            <div class="stars">${createStars(displayRating)}</div>
+                            <span class="rating-text">${displayRating.toFixed(1)}</span>
+                            <span class="review-count">(${displayCount} review${displayCount !== 1 ? 's' : ''})</span>
+                        </div>
+                        <div class="recipe-meta-detailed">
+                            <div class="recipe-meta-item"><span class="label">Prep Time</span><span class="value">${recipe.prepTime}</span></div>
+                            <div class="recipe-meta-item"><span class="label">Cook Time</span><span class="value">${recipe.cookTime}</span></div>
+                            <div class="recipe-meta-item"><span class="label">Total Time</span><span class="value">${recipe.totalTime}</span></div>
+                            <div class="recipe-meta-item"><span class="label">Servings</span><span class="value">${recipe.servings}</span></div>
+                            <div class="recipe-meta-item"><span class="label">Cuisine</span><span class="value">${recipe.cuisine || 'American'}</span></div>
+                            <div class="recipe-meta-item"><span class="label">Course</span><span class="value">${recipe.course || recipe.category}</span></div>
+                        </div>
+                        <p class="recipe-description">${recipe.description}</p>
+                    </div>
+                </div>
+                
+                <div class="recipe-content">
+                    <aside class="recipe-sidebar">
+                        <div class="ingredients-card">
+                            <h2>Ingredients</h2>
+                            <ul class="ingredient-list">
+                                ${recipe.ingredients.map(ing => `
+                                    <li class="ingredient-item" onclick="toggleIngredient(this)">
+                                        <div class="ingredient-checkbox"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
+                                        <span class="ingredient-text">${ing}</span>
+                                    </li>
+                                `).join('')}
+                            </ul>
+                        </div>
+                    </aside>
+                    
+                    <div class="directions-section">
+                        <h2>Directions</h2>
+                        ${recipe.directions.map((step, i) => `
+                            <div class="direction-step">
+                                <div class="step-number">${i + 1}</div>
+                                <div class="step-content"><p>${step}</p></div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+        
+        function toggleIngredient(el) {
+            el.classList.toggle('checked');
+            el.querySelector('.ingredient-checkbox').classList.toggle('checked');
+        }
+        
+        // Reviews
+        let currentReviewRecipeId = null;
+        
+        function loadReviews(recipeId) {
+            currentReviewRecipeId = recipeId;
+            visibleReviewCount = 3; // Reset to 3 when loading new recipe
+            
+            if (USE_FIRESTORE) {
+                // Load from Firestore
+                loadReviewsFromFirestore(recipeId);
+            } else {
+                // Use mock data
+                renderReviews();
+            }
+        }
+        
+        function renderReviews() {
+            const list = document.getElementById('reviewsList');
+            // Check Firestore reviews first, then fall back to mock
+            const reviews = firestoreReviews[currentReviewRecipeId] || mockReviews[currentReviewRecipeId] || [];
+            
+            if (reviews.length === 0) {
+                list.innerHTML = '<p style="color: var(--soft-brown); text-align: center; padding: var(--space-xl);">No reviews yet. Be the first!</p>';
+                return;
+            }
+            
+            const visibleReviews = reviews.slice(0, visibleReviewCount);
+            const hasMore = reviews.length > visibleReviewCount;
+            
+            list.innerHTML = visibleReviews.map(r => `
+                <div class="review-card">
+                    <div class="review-header">
+                        <div class="reviewer-info">
+                            <div class="reviewer-avatar">${r.name.charAt(0)}</div>
+                            <div>
+                                <div class="reviewer-name">${r.name}</div>
+                                <div class="review-date">${new Date(r.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</div>
+                            </div>
+                        </div>
+                        <div class="review-stars">${createStars(r.rating)}</div>
+                    </div>
+                    <p class="review-text">${r.text}</p>
+                </div>
+            `).join('');
+            
+            if (hasMore) {
+                const remaining = reviews.length - visibleReviewCount;
+                list.innerHTML += `
+                    <button class="load-more-reviews-btn" onclick="loadMoreReviews()">
+                        Show More Reviews (${remaining} more)
+                    </button>
+                `;
+            }
+        }
+        
+        function loadMoreReviews() {
+            visibleReviewCount += 3;
+            renderReviews();
+        }
+        
+        function setRating(rating) {
+            currentRating = rating;
+            document.getElementById('ratingValue').value = rating;
+            document.querySelectorAll('#starRatingInput button').forEach((btn, i) => {
+                btn.classList.toggle('active', i < rating);
+                btn.classList.remove('hover');
+            });
+        }
+        
+        function hoverRating(rating) {
+            document.querySelectorAll('#starRatingInput button').forEach((btn, i) => {
+                btn.classList.toggle('hover', i < rating);
+            });
+        }
+        
+        function resetStarHover() {
+            document.querySelectorAll('#starRatingInput button').forEach((btn) => {
+                btn.classList.remove('hover');
+            });
+        }
+        
+        function submitReview(event) {
+            event.preventDefault();
+            
+            const name = document.getElementById('reviewerName').value.trim();
+            const rating = parseInt(document.getElementById('ratingValue').value);
+            const text = document.getElementById('reviewText').value.trim();
+            
+            if (!name || !rating || !text) {
+                showToast('Please fill all fields and select a rating.', 'error');
+                return;
+            }
+            
+            // reCAPTCHA validation (uncomment when ready)
+            // const recaptchaResponse = grecaptcha.getResponse();
+            // if (!recaptchaResponse) { 
+            //     showToast('Please complete the reCAPTCHA', 'error'); 
+            //     return; 
+            // }
+            
+            const reviewData = {
+                recipeId: currentRecipe.id,
+                name: name,
+                rating: rating,
+                text: text,
+                date: new Date().toISOString(),
+                // recaptchaToken: recaptchaResponse // Include when using reCAPTCHA
+            };
+            
+            if (USE_FIRESTORE) {
+                // ============================================
+                // FIRESTORE MODE
+                // ============================================
+                const submitBtn = event.target.querySelector('.submit-btn');
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'Submitting...';
+                
+                db.collection('reviews').add(reviewData)
+                    .then(() => {
+                        showToast('Review submitted! Thank you.', 'success');
+                        document.getElementById('reviewerName').value = '';
+                        document.getElementById('reviewText').value = '';
+                        setRating(0);
+                        // grecaptcha.reset(); // Reset reCAPTCHA if using
+                        
+                        // Reload reviews from Firestore to show the new review
+                        loadReviewsFromFirestore(currentRecipe.id);
+                        
+                        // Update the recipe card/page rating display
+                        updateRecipeRatingDisplay(currentRecipe.id);
+                    })
+                    .catch((error) => {
+                        console.error('Error submitting review:', error);
+                        showToast('Error submitting review. Please try again.', 'error');
+                    })
+                    .finally(() => {
+                        submitBtn.disabled = false;
+                        submitBtn.textContent = 'Submit Review';
+                    });
+            } else {
+                // ============================================
+                // MOCK MODE: For testing without Firestore
+                // ============================================
+                if (!mockReviews[currentRecipe.id]) mockReviews[currentRecipe.id] = [];
+                mockReviews[currentRecipe.id].unshift(reviewData);
+                
+                showToast('Review submitted! (Mock mode)', 'success');
+                document.getElementById('reviewerName').value = '';
+                document.getElementById('reviewText').value = '';
+                setRating(0);
+                
+                // Refresh the reviews display and rating
+                renderReviews();
+                updateRecipeRatingDisplay(currentRecipe.id);
+            }
+        }
+        
+        // ============================================
+        // FIRESTORE: Load reviews from database
+        // ============================================
+        function loadReviewsFromFirestore(recipeId) {
+            currentReviewRecipeId = recipeId;
+            visibleReviewCount = 3;
+            
+            const list = document.getElementById('reviewsList');
+            list.innerHTML = '<p style="color: var(--soft-brown); text-align: center; padding: var(--space-xl);">Loading reviews...</p>';
+            
+            db.collection('reviews')
+                .where('recipeId', '==', recipeId)
+                .orderBy('date', 'desc')
+                .get()
+                .then((querySnapshot) => {
+                    firestoreReviews[recipeId] = [];
+                    querySnapshot.forEach((doc) => {
+                        firestoreReviews[recipeId].push({ id: doc.id, ...doc.data() });
+                    });
+                    renderReviews();
+                })
+                .catch((error) => {
+                    console.error('Error loading reviews:', error);
+                    list.innerHTML = '<p style="color: var(--soft-brown); text-align: center; padding: var(--space-xl);">Error loading reviews. Please try again.</p>';
+                });
+        }
+        
+        // Update the rating display on recipe page after new review
+        function updateRecipeRatingDisplay(recipeId) {
+            const stats = getRecipeStats(recipeId); // Uses firestoreReviews when available
+            
+            // Update recipe page header rating
+            const ratingLarge = document.querySelector('.recipe-rating-large');
+            if (ratingLarge) {
+                ratingLarge.querySelector('.stars').innerHTML = createStars(stats.averageRating);
+                ratingLarge.querySelector('.rating-text').textContent = stats.averageRating.toFixed(1);
+                ratingLarge.querySelector('.review-count').textContent = `(${stats.reviewCount} review${stats.reviewCount !== 1 ? 's' : ''})`;
+            }
+        }
+        
+        // Storage for Firestore reviews (populated when USE_FIRESTORE is true)
+        let firestoreReviews = {};
+        
+        // UI Helpers
+        function toggleMobileMenu() { 
+            const menu = document.getElementById('mobileMenu');
+            const floatingHamburger = document.getElementById('floatingHamburger');
+            menu.classList.toggle('open');
+            
+            // Hide floating hamburger when menu is open
+            if (menu.classList.contains('open')) {
+                floatingHamburger.style.display = 'none';
+            } else {
+                floatingHamburger.style.display = '';
+            }
+        }
+        function hideMobileMenu() { 
+            document.getElementById('mobileMenu').classList.remove('open');
+            document.getElementById('floatingHamburger').style.display = '';
+        }
+        
+        // Reset header visibility (call after navigation)
+        function resetHeaderVisibility() {
+            const desktopHeader = document.getElementById('mainHeader');
+            const floatingNav = document.getElementById('floatingNav');
+            const mobileHeader = document.getElementById('mobileHeader');
+            const floatingHamburger = document.getElementById('floatingHamburger');
+            
+            // Reset all headers to hidden state
+            desktopHeader.classList.remove('visible');
+            floatingNav.classList.remove('hidden');
+            mobileHeader.classList.remove('visible');
+            floatingHamburger.classList.remove('hidden');
+            
+            // Re-run scroll check after a brief delay to let the page render
+            setTimeout(() => {
+                const heroSection = document.querySelector('.hero');
+                const scrollY = window.scrollY;
+                const threshold = heroSection ? heroSection.offsetTop + (heroSection.offsetHeight * 0.4) : 150;
+                const isMobile = window.innerWidth <= 1200;
+                
+                if (isMobile) {
+                    if (scrollY > threshold) {
+                        mobileHeader.classList.add('visible');
+                        floatingHamburger.classList.add('hidden');
+                    }
+                } else {
+                    if (scrollY > threshold) {
+                        desktopHeader.classList.add('visible');
+                        floatingNav.classList.add('hidden');
+                    }
+                }
+            }, 50);
+        }
+        
+        function showToast(msg, type = '') {
+            const toast = document.getElementById('toast');
+            toast.textContent = msg;
+            toast.className = 'toast ' + type + ' show';
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+        
+        init();
+    </script>
+</body>
+</html>

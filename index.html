@@ -581,6 +581,44 @@
             color: var(--soft-brown);
             margin: 0;
         }
+
+		/* Static Page Header (non-homepage) */
+        .page-header {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 50;
+            padding: var(--space-md) 0;
+        }
+
+        .page-header.visible {
+            display: block;
+        }
+
+        .page-header-inner {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+        }
+		
+        .page-header .logo-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            object-fit: cover;
+            background: var(--burnt-orange);
+            padding: 1px;
+            opacity: 0.98;
+		}
+		
+        .page-header .logo-text {
+            font-family: var(--font-display);
+            font-size: 1.35rem;
+            font-weight: 600;
+            color: var(--burnt-orange);
+        }
         
         .header-inner {
             display: flex;
@@ -1988,6 +2026,16 @@
         </div>
     </nav>
 
+	<!-- Static Page Header (visible on non-homepage pages before scroll) -->
+    <header class="page-header" id="pageHeader">
+        <div class="container page-header-inner">
+            <a href="#" class="logo" onclick="showHome(event)">
+                <img class="logo-icon" src="logo.png" alt="Doubly Cooked">
+                <span class="logo-text">Doubly Cooked</span>
+            </a>
+        </div>
+    </header>
+
     <!-- Desktop Header (appears on scroll) -->
     <header class="header" id="mainHeader">
         <div class="container header-inner">
@@ -2852,6 +2900,7 @@
             document.getElementById('browsePage').classList.remove('active');
             document.getElementById('aboutPage').classList.add('active');
             document.getElementById('contactPage').classList.remove('active');
+            document.getElementById('pageHeader').classList.add('visible');
             currentPage = 'about';
             safePushState({ page: 'about' }, '', '?page=about');
             window.scrollTo(0, 0);
@@ -2866,6 +2915,7 @@
             document.getElementById('browsePage').classList.remove('active');
             document.getElementById('aboutPage').classList.remove('active');
             document.getElementById('contactPage').classList.add('active');
+            document.getElementById('pageHeader').classList.add('visible');
             currentPage = 'contact';
             safePushState({ page: 'contact' }, '', '?page=contact');
             window.scrollTo(0, 0);
@@ -3021,14 +3071,22 @@
             document.getElementById('aboutPage').classList.remove('active');
             document.getElementById('contactPage').classList.remove('active');
             document.getElementById('recipePage').classList.add('active');
+            document.getElementById('pageHeader').classList.add('visible');
             renderRecipe(recipe);
             loadReviews(recipe.id);
+            clearReviewForm();
             currentPage = 'recipe';
             if (addToHistory) {
                 safePushState({ page: 'recipe', recipeId: recipe.id, searchQuery: currentSearchQuery }, '', `?recipe=${recipe.id}`);
             }
             window.scrollTo(0, 0);
         }
+		
+        function clearReviewForm() {
+            document.getElementById('reviewerName').value = '';
+            document.getElementById('reviewText').value = '';
+            setRating(0);
+		}
         
         function goBackFromRecipe() {
             if (currentSearchQuery) {
@@ -3086,7 +3144,7 @@
             document.getElementById('browsePage').classList.remove('active');
             document.getElementById('contactPage').classList.remove('active');
             document.getElementById('searchResults').classList.add('active');
-            
+            document.getElementById('pageHeader').classList.add('visible');
             const grid = document.getElementById('searchResultsGrid');
             const countEl = document.getElementById('searchResultsCount');
             

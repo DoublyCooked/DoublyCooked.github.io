@@ -96,19 +96,31 @@
             
             /* Headers and floating elements */
             .header {
-                background: var(--soft-cream);
-                border-bottom-color: var(--border-warm);
-            }
+                background: rgba(42, 36, 32, 0.85);
+                backdrop-filter: blur(20px) saturate(180%);
+                -webkit-backdrop-filter: blur(20px) saturate(180%);
+                border-bottom: 1px solid rgba(74, 65, 58, 0.5);
+           }
             
             .floating-nav .nav-link,
             .floating-nav .social-link {
-                background: var(--soft-cream);
-            }
+                background: rgba(42, 36, 32, 0.85);
+                backdrop-filter: blur(20px) saturate(180%);
+                -webkit-backdrop-filter: blur(20px) saturate(180%);
+           }
             
             .mobile-header {
-                background: var(--soft-cream);
-                border-bottom-color: var(--border-warm);
+                background: rgba(42, 36, 32, 0.85);
+                backdrop-filter: blur(20px) saturate(180%);
+                -webkit-backdrop-filter: blur(20px) saturate(180%);
+                border-bottom: 1px solid rgba(74, 65, 58, 0.5);
             }
+            
+            .page-header {
+                background: rgba(42, 36, 32, 0.6);
+                backdrop-filter: blur(12px) saturate(150%);
+                -webkit-backdrop-filter: blur(12px) saturate(150%);
+           }
             
             .mobile-menu {
                 background: var(--warm-cream);
@@ -224,6 +236,36 @@
                 background: var(--soft-cream);
                 border-color: var(--border-warm);
             }
+            
+            /* Footer */
+            .footer {
+                background: #1A1614;
+            }
+            
+            .footer-brand .logo-text,
+            .footer-links h4 {
+                color: var(--warm-cream);
+            }
+            
+            .footer-brand p,
+            .footer-links a,
+            .footer-bottom {
+                color: rgba(200, 190, 180, 0.7);
+            }
+            
+            .footer-links a:hover {
+                color: var(--warm-cream);
+            }
+            
+            .footer-social a {
+                background: rgba(200, 190, 180, 0.1);
+                color: rgba(200, 190, 180, 0.9);
+            }
+            
+            .footer-social a:hover {
+                background: var(--burnt-orange);
+                color: white;
+            }
         }
         
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -270,8 +312,10 @@
         
         /* Header - slides down on scroll (desktop only) */
         .header {
-            background: var(--warm-white);
-            border-bottom: 1px solid var(--border-warm);
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border-bottom: 1px solid rgba(139, 90, 43, 0.1);
             position: fixed;
             top: 0;
             left: 0;
@@ -298,7 +342,9 @@
         }
         
         .floating-nav .nav-link {
-            background: var(--warm-white);
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
             box-shadow: 0 2px 12px var(--shadow-warm);
             border-radius: var(--radius-md);
             padding: var(--space-sm) var(--space-md);
@@ -324,7 +370,9 @@
             align-items: center;
             justify-content: center;
             border-radius: 50%;
-            background: var(--warm-white);
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
             box-shadow: 0 2px 12px var(--shadow-warm);
             color: var(--warm-brown);
             transition: all 0.2s ease;
@@ -351,8 +399,10 @@
             left: 0;
             right: 0;
             z-index: 102;
-            background: var(--warm-white);
-            border-bottom: 1px solid var(--border-warm);
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border-bottom: 1px solid rgba(139, 90, 43, 0.1);
             padding: var(--space-md) var(--space-md);
         }
         
@@ -1063,7 +1113,7 @@
         /* Browse Page */
         .browse-page {
             padding: var(--space-2xl) 0;
-            padding-top: 100px;
+            padding-top: 120px;
             display: none;
         }
         
@@ -1241,7 +1291,7 @@
         /* Search Results */
         .search-results {
             padding: var(--space-2xl) 0;
-            padding-top: 80px;
+            padding-top: 100px;
             display: none;
         }
         
@@ -1272,7 +1322,7 @@
         .recipe-page {
             display: none;
             padding: var(--space-2xl) 0;
-            padding-top: 80px;
+            padding-top: 100px;
         }
         
         .recipe-page.active { display: block; }
@@ -1378,6 +1428,24 @@
         }
         
         .ingredient-list { list-style: none; }
+        
+        .ingredient-section {
+            margin-bottom: var(--space-lg);
+        }
+        
+        .ingredient-section:last-child {
+            margin-bottom: 0;
+        }
+        
+        .ingredient-section-title {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--burnt-orange);
+            margin-bottom: var(--space-sm);
+            padding-bottom: var(--space-xs);
+            border-bottom: 1px dashed var(--border-warm);
+        }
         
         .ingredient-item {
             display: flex;
@@ -1575,7 +1643,7 @@
         }
         
         /* About Page */
-        .about-page { display: none; padding: var(--space-3xl) 0; }
+        .about-page { display: none; padding: var(--space-3xl) 0; padding-top: 100px; }
         .about-page.active { display: block; }
         .about-hero { text-align: center; margin-bottom: var(--space-3xl); }
         .about-hero h1 { margin-bottom: var(--space-lg); }
@@ -1640,6 +1708,7 @@
         .contact-page { 
             display: none; 
             padding: var(--space-3xl) 0; 
+            padding-top: 100px;
         }
         
         .contact-page.active { display: block; }
@@ -1915,6 +1984,31 @@
         .toast.show { transform: translateY(0); opacity: 1; }
         .toast.success { background: #2E7D32; }
         .toast.error { background: #C62828; }
+        
+        /* Dark mode overrides for glossy navbar (must come after regular styles) */
+        @media (prefers-color-scheme: dark) {
+            .header {
+                background: rgba(42, 36, 32, 0.88);
+                border-bottom: 1px solid rgba(74, 65, 58, 0.5);
+            }
+            
+            .floating-nav .nav-link {
+                background: rgba(42, 36, 32, 0.88);
+            }
+            
+            .floating-nav .social-link {
+                background: rgba(42, 36, 32, 0.88);
+            }
+            
+            .mobile-header {
+                background: rgba(42, 36, 32, 0.88);
+                border-bottom: 1px solid rgba(74, 65, 58, 0.5);
+            }
+            
+            .page-header {
+                background: rgba(42, 36, 32, 0.6);
+            }
+        }
     </style>
 </head>
 <body>
@@ -2478,7 +2572,7 @@
             </div>
             
             <div class="footer-bottom">
-                <p>&copy; 2024 Doubly Cooked. Made with ❤️ by Garrett & Hunter Cook.</p>
+                <p>&copy; 2025 Doubly Cooked.<br />Made with ❤️ by Garrett & Hunter Cook.</p>
             </div>
         </div>
     </footer>
@@ -2688,7 +2782,11 @@
                 category: "Breakfast",
                 cuisine: "Middle Eastern",
                 course: "Breakfast",
-                ingredients: ["28 oz crushed tomatoes", "6 eggs", "1 onion", "1 red bell pepper", "4 cloves garlic", "2 tsp cumin", "2 tsp paprika", "1 tsp cayenne", "1/2 tsp sugar", "3 tbsp olive oil", "Salt and pepper", "Cilantro and feta", "Crusty bread"],
+                ingredients: [
+                    { section: "Tomato Base", items: ["28 oz crushed tomatoes", "1 onion, diced", "1 red bell pepper, diced", "4 cloves garlic, minced", "3 tbsp olive oil", "1/2 tsp sugar", "Salt and pepper to taste"] },
+                    { section: "Spices", items: ["2 tsp cumin", "2 tsp paprika", "1 tsp cayenne (adjust to taste)"] },
+                    { section: "To Finish", items: ["6 large eggs", "1/4 cup crumbled feta", "Fresh cilantro, chopped", "Crusty bread for serving"] }
+                ],
                 directions: [
                     "Cook onion and pepper in oil until soft.",
                     "Add garlic and spices, cook 1 minute.",
@@ -2885,7 +2983,7 @@
             document.getElementById('browsePage').classList.remove('active');
             document.getElementById('aboutPage').classList.remove('active');
             document.getElementById('contactPage').classList.remove('active');
-			document.getElementById('pageHeader').classList.remove('visible');
+            document.getElementById('pageHeader').classList.remove('visible');
             currentPage = 'home';
             safePushState({ page: 'home' }, '', window.location.pathname);
             window.scrollTo(0, 0);
@@ -2931,7 +3029,7 @@
             document.getElementById('aboutPage').classList.remove('active');
             document.getElementById('contactPage').classList.remove('active');
             document.getElementById('browsePage').classList.add('active');
-			document.getElementById('pageHeader').classList.remove('visible');
+            document.getElementById('pageHeader').classList.add('visible');
             currentPage = 'browse';
             safePushState({ page: 'browse' }, '', '?page=browse');
             window.scrollTo(0, 0);
@@ -3076,19 +3174,22 @@
             document.getElementById('pageHeader').classList.add('visible');
             renderRecipe(recipe);
             loadReviews(recipe.id);
+            
+            // Clear the review form when navigating to a new recipe
             clearReviewForm();
+            
             currentPage = 'recipe';
             if (addToHistory) {
                 safePushState({ page: 'recipe', recipeId: recipe.id, searchQuery: currentSearchQuery }, '', `?recipe=${recipe.id}`);
             }
             window.scrollTo(0, 0);
         }
-		
+        
         function clearReviewForm() {
             document.getElementById('reviewerName').value = '';
             document.getElementById('reviewText').value = '';
             setRating(0);
-		}
+        }
         
         function goBackFromRecipe() {
             if (currentSearchQuery) {
@@ -3147,6 +3248,7 @@
             document.getElementById('contactPage').classList.remove('active');
             document.getElementById('searchResults').classList.add('active');
             document.getElementById('pageHeader').classList.add('visible');
+            
             const grid = document.getElementById('searchResultsGrid');
             const countEl = document.getElementById('searchResultsCount');
             
@@ -3278,7 +3380,7 @@
                     "recipeYield": "${recipe.servings}",
                     "recipeCategory": "${recipe.category}",
                     "recipeCuisine": "${recipe.cuisine || ''}",
-                    "recipeIngredient": ${JSON.stringify(recipe.ingredients)},
+                    "recipeIngredient": ${JSON.stringify(getFlatIngredients(recipe.ingredients))},
                     "aggregateRating": {"@type": "AggregateRating", "ratingValue": "${displayRating.toFixed(1)}", "ratingCount": "${displayCount}"}
                 }
                 <\/script>
@@ -3309,14 +3411,7 @@
                     <aside class="recipe-sidebar">
                         <div class="ingredients-card">
                             <h2>Ingredients</h2>
-                            <ul class="ingredient-list">
-                                ${recipe.ingredients.map(ing => `
-                                    <li class="ingredient-item" onclick="toggleIngredient(this)">
-                                        <div class="ingredient-checkbox"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
-                                        <span class="ingredient-text">${ing}</span>
-                                    </li>
-                                `).join('')}
-                            </ul>
+                            ${renderIngredients(recipe.ingredients)}
                         </div>
                     </aside>
                     
@@ -3331,6 +3426,48 @@
                     </div>
                 </div>
             `;
+        }
+        
+        // Render ingredients - supports both flat arrays and sectioned arrays
+        function renderIngredients(ingredients) {
+            // Check if ingredients has sections (array of objects with section/items)
+            const hasSections = ingredients.length > 0 && typeof ingredients[0] === 'object' && ingredients[0].section;
+            
+            if (hasSections) {
+                return ingredients.map(section => `
+                    <div class="ingredient-section">
+                        <h3 class="ingredient-section-title">${section.section}</h3>
+                        <ul class="ingredient-list">
+                            ${section.items.map(ing => `
+                                <li class="ingredient-item" onclick="toggleIngredient(this)">
+                                    <div class="ingredient-checkbox"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
+                                    <span class="ingredient-text">${ing}</span>
+                                </li>
+                            `).join('')}
+                        </ul>
+                    </div>
+                `).join('');
+            } else {
+                // Flat array of ingredients
+                return `
+                    <ul class="ingredient-list">
+                        ${ingredients.map(ing => `
+                            <li class="ingredient-item" onclick="toggleIngredient(this)">
+                                <div class="ingredient-checkbox"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
+                                <span class="ingredient-text">${ing}</span>
+                            </li>
+                        `).join('')}
+                    </ul>
+                `;
+            }
+        }
+        
+        // Get flat list of ingredients for schema.org (works with both formats)
+        function getFlatIngredients(ingredients) {
+            if (ingredients.length > 0 && typeof ingredients[0] === 'object' && ingredients[0].section) {
+                return ingredients.flatMap(section => section.items);
+            }
+            return ingredients;
         }
         
         function toggleIngredient(el) {

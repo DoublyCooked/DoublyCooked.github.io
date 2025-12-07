@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Doubly Cooked | Recipes by Garrett & Hunter</title>
-    <meta name="description" content="Delicious recipes from Garrett and Hunter Cook, a couple who love to cook, bake, and share their culinary adventures.">
+    <title>Doubly Cooked | Recipes by Garrett & Hunter Cook</title>
+    <meta name="description" content="Flexible and flavorful recipes from Garrett and Hunter Cook.">
 	
 	<!-- Standard favicons -->
 	<link rel="icon" href="public/favicon.ico">
@@ -2101,7 +2101,7 @@
                         <p class="hero-tagline">One kitchen, two Cooks.</p>
                     </div>
                     <div class="hero-divider"></div>
-                    <p class="hero-subtitle">Home-tested recipes from Garrett and Hunter Cook — made with love, meant to be shared.</p>
+                    <p class="hero-subtitle">Flexible and flavorful recipes.<br />Made with love from Garrett and Hunter Cook.<br /></p>
                     
                     <div class="search-container">
                         <form class="search-box" onsubmit="performSearch(event)">
@@ -2330,7 +2330,7 @@
                     </div>
                     
                     <div class="about-text">
-                        <p>Welcome to Doubly Cooked! We're Garrett and Hunter Cook, a gay couple living in beautiful Oregon who share an unbridled passion for cooking and baking. What started as late-night experiments in our tiny apartment kitchen has blossomed into this collection of recipes we're thrilled to share with you.</p>
+                        <p>Welcome to Doubly Cooked! We're Garrett and Hunter Cook, a couple living in beautiful Oregon who share an unbridled passion for cooking and baking. What started as late-night experiments in our tiny apartment kitchen has blossomed into this collection of recipes we're thrilled to share with you.</p>
                         
                         <p>When we're not covered in flour or perfecting our sourdough technique, you'll find us hiking the stunning trails of the Pacific Northwest, tending to our ever-growing jungle of houseplants, or being bossed around by our three cats: Mochi, Basil, and Thyme (yes, we named two of them after herbs – we couldn't help ourselves).</p>
                         
@@ -2885,6 +2885,7 @@
             document.getElementById('browsePage').classList.remove('active');
             document.getElementById('aboutPage').classList.remove('active');
             document.getElementById('contactPage').classList.remove('active');
+			document.getElementById('pageHeader').classList.remove('visible');
             currentPage = 'home';
             safePushState({ page: 'home' }, '', window.location.pathname);
             window.scrollTo(0, 0);
@@ -2930,6 +2931,7 @@
             document.getElementById('aboutPage').classList.remove('active');
             document.getElementById('contactPage').classList.remove('active');
             document.getElementById('browsePage').classList.add('active');
+			document.getElementById('pageHeader').classList.remove('visible');
             currentPage = 'browse';
             safePushState({ page: 'browse' }, '', '?page=browse');
             window.scrollTo(0, 0);
